@@ -1,0 +1,281 @@
+/*
+ *  JsonRpc-Cpp - JSON-RPC implementation.
+ *  Copyright (C) 2008 Sebastien Vincent <sebastien.vincent@cppextrem.com>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file jsonrpc_handler.h
+ * \brief JSON-RPC processor engine.
+ * \author Sebastien Vincent
+ */
+
+#ifndef JSONRPC_HANDLER_H
+#define JSONRPC_HANDLER_H
+
+#include <string>
+#include <list>
+
+#include <json/json.h>
+
+/**
+ * \namespace Json
+ * \brief JSON (JavaScript Object Notation).
+ */
+namespace Json 
+{
+  /**
+   * \namespace Json::Rpc
+   * \brief JSON-RPC (remote procedure call using JSON as encoding format).
+   */
+  namespace Rpc
+  {
+    /**
+     * \enum ErrorCode
+     * \brief JSON-RPC error codes.
+     * \note Value from -32099 to -32000 are reserved for implementation-defined server-errors.
+     */
+    enum ErrorCode
+    {
+      PARSING_ERROR = -32700, /**< Invalid JSON. An error occurred on the server while parsing the JSON text. */
+      INVALID_REQUEST = -32600, /**< The received JSON not a valid JSON-RPC Request. */
+      METHOD_NOT_FOUND = -32601, /**< The requested remote-procedure does not exist / is not available. */
+      INVALID_PARAMS = -32602, /**< Invalid method parameters. */
+      INTERNAL_ERROR = -32603, /**< Internal JSON-RPC error. */
+    };
+
+    /**
+     * \class CallbackMethod
+     * \brief Callback-style method.
+     */
+    class CallbackMethod
+    {
+      public:
+        /**
+         * \brief Destructor.
+         */
+        virtual ~CallbackMethod();
+
+        /**
+         * \brief Call the method.
+         * \param msg JSON-RPC request or notification
+         * \param response response produced (may be Json::Value::null)
+         * \return true if message has been correctly processed, false otherwise
+         * \note Have to be implemented by subclasses
+         */
+        virtual bool Call(const Json::Value& msg, Json::Value& response) = 0;
+
+        /**
+         * \brief Get the name of the methods (optional).
+         * \return name of the method as std::string
+         * \note Have to be implemented by subclasses
+         */
+        virtual std::string GetName() const = 0;
+
+        /**
+         * \brief Get the description of the methods (optional).
+         * \return description
+         */
+        virtual Json::Value GetDescription() const = 0;
+    };
+
+    /**
+     * \brief Template class that represent the RPC method.
+     */
+    template<class T> class RpcMethod : public CallbackMethod
+    {
+      public:
+        /**
+         * \brief the T method signature.
+         */
+        typedef bool (T::*Method)(const Json::Value& msg, Json::Value& response);
+
+        /**
+         * \brief Constructor.
+         * \param obj Object
+         * \param method the class
+         * \param name symbolic name (i.e. system.describe)
+         * \param description method description (in JSON format)
+         */
+        RpcMethod(T& obj, Method method, const std::string& name, const Json::Value description = Json::Value::null)
+        {
+          m_obj = &obj;
+          m_name = name;
+          m_method = method;
+          m_description = description;
+        }
+
+        /**
+         * \brief Call the method.
+         * \param msg JSON-RPC request or notification
+         * \param response response produced (may be Json::Value::null)
+         * \return true if message has been correctly processed, false otherwise
+         */
+        virtual bool Call(const Json::Value& msg, Json::Value& response)
+        {
+          (m_obj->*m_method)(msg, response);
+        }
+
+        /**
+         * \brief Get the name of the methods (optional).
+         * \return name of the method as std::string
+         * \note Have to be implemented by subclasses
+         */
+        virtual std::string GetName() const
+        {
+          return m_name;
+        }
+
+        /**
+         * \brief Get the description of the methods (optional).
+         * \return description
+         */
+        virtual Json::Value GetDescription() const
+        {
+          return m_description;
+        }
+
+      private:
+        /**
+         * \brief Object pointer.
+         */
+        T* m_obj;
+
+        /**
+         * \brief Method of T class.
+         */
+        Method m_method;
+
+        /**
+         * \brief Symbolic name.
+         */
+        std::string m_name;
+
+        /**
+         * \brief JSON-formated description of the RPC method.
+         */
+        Json::Value m_description;
+    };
+
+    /**
+     * \class Handler
+     * \brief Container of methods which can be called remotly.
+     */
+    class Handler
+    {
+      public:
+        /**
+         * \brief Constructor.
+         */
+        Handler();
+
+        /**
+         * \brief Copy constructor.
+         * \param handler Handler object to copy
+         */
+        Handler(const Handler& handler);
+
+        /**
+         * \brief Destructor.
+         */
+        ~Handler();
+
+        /**
+         * \brief Add a new RPC method.
+         * \param method the method
+         */
+        void AddMethod(CallbackMethod* method);
+
+        /**
+         * \brief Remote a RPC method.
+         * \param name name of the RPC method
+         */
+        void DeleteMethod(const std::string& name);
+
+        /**
+         * \brief Process a JSON-RPC message.
+         * \param msg JSON-RPC message as std::string
+         * \param response JSON-RPC response (could be Json::Value::null)
+         * \return true if the request has been correctly processed, false otherwise (may be
+         * caused by parsed error, ...)
+         * \note in case msg is a notification, response is equal to Json::Value::null 
+         * and the return value is true.
+         */
+        bool Process(const std::string& msg, Json::Value& response);
+
+        /**
+         * \brief Process a JSON-RPC message.
+         * \param msg JSON-RPC message as C-String
+         * \param response JSON-RPC response (could be Json::Value::null)
+         * \return true if the request has been correctly processed, false otherwise (may be
+         * caused by parsed error, ...)
+         * \note in case msg is a notification, response is equal to Json::Value::null 
+         * and the return value is true.
+         */
+        bool Process(const char* msg, Json::Value& response);
+
+        /**
+         * \brief RPC method that get all the RPC methods and their description.
+         * \param msg request
+         * \param response response
+         * \return true if processed correctly, false otherwise
+         */
+        bool SystemDescribe(const Json::Value& msg, Json::Value& response);
+
+        /**
+         * \brief Get a std::string representation of Json::Value.
+         * \param value JSON message
+         * \return string representation
+         */
+        std::string GetString(Json::Value value);
+
+      private:
+        /**
+         * \brief JSON reader.
+         */
+        Json::Reader m_reader;
+
+        /**
+         * \brief JSON write.
+         */
+        Json::FastWriter m_writer;
+
+        /**
+         * \brief List of RPC methods.
+         */
+        std::list<CallbackMethod*> m_methods;
+
+        /**
+         * \brief Find CallbackMethod by name.
+         * \param name name of the CallbackMethod
+         * \return a CallbackMethod pointer if found, 0 otherwise
+         */
+        CallbackMethod* Lookup(const std::string& name) const;
+
+        /**
+         * \brief Check if the message is a valid JSON one.
+         * \param msg the message to check
+         * \param root message parsed (only valid if method returns true)
+         * \return true if the message is a JSON one, false otherwise
+         */
+        bool Check(const std::string& msg, Json::Value& root);
+    };
+
+  } /* namespace Rpc */
+
+} /* namespace Json */
+
+#endif /* JSONRPC_HANDLER_H */
+

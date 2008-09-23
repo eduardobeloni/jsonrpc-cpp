@@ -1,0 +1,29 @@
+Installation
+============
+
+Requirements
+-------------
+
+- C++ compiler toolchain;
+- python;
+- scons;
+- libjson installed (http://jsoncpp.sourceforge.net/).
+
+Build
+------
+
+To build the project : 
+$ scons
+
+To clean up the project : 
+$ scons -c
+
+Install
+--------
+
+On Unix systems, simply run as root : 
+# scons install
+
+This command will install include files in /usr/local/include/jsonrpc/include/ and 
+libjsonrpc.so file in /usr/local/lib/
+
