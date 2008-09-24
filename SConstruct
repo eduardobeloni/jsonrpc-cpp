@@ -24,9 +24,10 @@ udpserver = env.Program(target = 'test/udp-server', source = udpserver_sources, 
 env.Install(dir = install_dir + "/lib/", source = libjsonrpc);
 env.Install(dir = install_dir + "/include/jsonrpc/", source = lib_includes);
 env.Alias('install', [install_dir]);
+env.Alias('examples', ['test/tcp-server', 'test/udp-server']);
 
 # Default target when running scons without arguments
 Default(libjsonrpc);
-Default(tcpserver);
-Default(udpserver);
+#Default(tcpserver);
+#Default(udpserver);
 

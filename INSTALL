@@ -27,3 +27,12 @@ On Unix systems, simply run as root :
 This command will install include files in /usr/local/include/jsonrpc/include/ and 
 libjsonrpc.so file in /usr/local/lib/
 
+Examples
+---------
+
+JsonRpc-Cpp provides a simple TCP and UDP JSON-RPC server. After JsonRpc-Cpp install, run :
+
+$ scons examples
+
+This will build test/tcp-server and test/udp-server examples.
+
