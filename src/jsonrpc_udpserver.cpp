@@ -74,6 +74,7 @@ namespace Json
         /* give the message to JsonHandler */
         m_jsonHandler.Process(msg, response);
 
+        /* in case of notification message received, the response could be Json::Value::null */
         if(response != Json::Value::null)
         {
           std::string rep = m_jsonHandler.GetString(response);

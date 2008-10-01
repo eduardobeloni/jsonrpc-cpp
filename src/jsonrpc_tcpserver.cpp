@@ -76,6 +76,7 @@ namespace Json
 
         m_jsonHandler.Process(buf, response);
 
+        /* in case of notification message received, the response could be Json::Value::null */
         if(response != Json::Value::null)
         {
           std::string rep = m_jsonHandler.GetString(response);

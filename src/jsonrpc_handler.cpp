@@ -41,14 +41,9 @@ namespace Json
 
       root["description"] = "List the RPC methods available";
       root["parameters"] = Json::Value::null;
-      root["returns"] = Json::Value::null;
+      root["returns"] = "Object that contains description of all methods registered";
 
       AddMethod(new RpcMethod<Handler>(*this, &Handler::SystemDescribe, std::string("system.describe"), root));
-    }
-
-    Handler::Handler(const Handler& handler)
-    {
-      /* TODO */
     }
 
     Handler::~Handler()

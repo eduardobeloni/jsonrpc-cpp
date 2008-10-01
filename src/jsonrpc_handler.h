@@ -172,6 +172,7 @@ namespace Json
     /**
      * \class Handler
      * \brief Container of methods which can be called remotly.
+     * \note Always pass in fucntion with reference (i.e. void foo(Json::Rpc::Handler& handler)).
      */
     class Handler
     {
@@ -182,12 +183,6 @@ namespace Json
         Handler();
 
         /**
-         * \brief Copy constructor.
-         * \param handler Handler object to copy
-         */
-        Handler(const Handler& handler);
-
-        /**
          * \brief Destructor.
          */
         ~Handler();
@@ -195,6 +190,9 @@ namespace Json
         /**
          * \brief Add a new RPC method.
          * \param method the method
+         * \warning The "method" parameter MUST be dynamically allocated (using new).
+         * \warning Json::Rpc::Handler object takes care of freeing method memory.\n
+         * The way of calling this method is handler.AddMethod(new RpcMethod(...));
          */
         void AddMethod(CallbackMethod* method);
 
