@@ -75,7 +75,7 @@ namespace Json
         /**
          * \brief Put the TCP socket in LISTEN state.
          */
-        bool Listen();
+        bool Listen() const;
 
         /**
          * \brief Accept a new client socket.
@@ -87,7 +87,7 @@ namespace Json
          * \brief Get the list of clients.
          * \return list of clients
          */
-        std::list<int> GetClients();
+        std::list<int> GetClients() const;
 
       private:
         /**

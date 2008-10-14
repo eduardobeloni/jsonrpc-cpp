@@ -104,10 +104,28 @@ namespace Json
     {
       bool parsing = m_reader.parse(msg, root);
 
+      /* if one thing goes wrong, we forge an error attribute that
+       * will be added to a JSON-RPC error message 
+       */
       if(!parsing)
       {
+        root = Json::Value();
+        root["code"] = PARSING_ERROR;
+        root["message"] = "Parse error";
+        
         return false;
       }
+
+      /* check the JSON-RPC version => 2.0 */
+      if(!root.isObject() || !root.isMember("jsonrpc") || root["jsonrpc"] != "2.0") 
+      {
+        root = Json::Value();
+        root["code"] = INVALID_REQUEST;
+        root["message"] = "Invalid JSON-RPC";
+        
+        return false;
+      }
+
       return true;
     }
 
@@ -118,19 +136,14 @@ namespace Json
 
       if(!Check(msg, root))
       {
-        response["id"] = Json::Value::null;
         response["jsonrpc"] = "2.0";
-
-        Json::Value error;
-        error["code"] = PARSING_ERROR;
-        error["message"] = "Parse error";
-        response["error"] = error;
+        response["error"] = root;
+        response["id"] = Json::Value::null;
         return false;
       }
 
       /* extract "method" attribute */
-
-      if(!root.isObject() || !root.isMember("method") || !root["method"].isString() || !root.isMember("jsonrpc"))
+      if(!root.isMember("method") || !root["method"].isString())
       {
         response["id"] = Json::Value::null;
         response["jsonrpc"] = "2.0";

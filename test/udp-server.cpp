@@ -15,7 +15,7 @@ class Plop
     bool Print(const Json::Value& root, Json::Value& response)
     {
       std::cout << "Plop" << std::endl;
-      response["jsonrpc"] = 2.0;
+      response["jsonrpc"] = "2.0";
       response["id"] = root["id"];
       response["result"] = "success";
       return true;

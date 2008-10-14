@@ -154,7 +154,7 @@ namespace Json
       }
     }
 
-    bool TcpServer::Listen()
+    bool TcpServer::Listen() const
     {
       if(m_sock == -1)
       {
@@ -188,6 +188,11 @@ namespace Json
 
       m_clients.push_back(client);
       return true;
+    }
+
+    std::list<int> TcpServer::GetClients() const
+    {
+      return m_clients;
     }
 
   } /* namespace Rpc */

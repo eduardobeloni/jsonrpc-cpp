@@ -265,7 +265,7 @@ namespace Json
         /**
          * \brief Check if the message is a valid JSON one.
          * \param msg the message to check
-         * \param root message parsed (only valid if method returns true)
+         * \param root message parsed if method returns true, the error attribute otherwise
          * \return true if the message is a JSON one, false otherwise
          */
         bool Check(const std::string& msg, Json::Value& root);
