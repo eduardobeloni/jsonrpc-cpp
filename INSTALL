@@ -7,21 +7,22 @@ Requirements
 - C++ compiler toolchain;
 - python;
 - scons;
-- libjson installed (http://jsoncpp.sourceforge.net/).
+- JsonCpp library installed (http://jsoncpp.sourceforge.net/): 
+  Once JsonCpp is compiled, copy the include files to /usr/local/include/json/ directory and libjson_*.so (found in bin/<your_platform>/) to /usr/local/lib/libjson.so
 
 Build
 ------
 
-To build the project : 
+To build the project: 
 $ scons
 
-To clean up the project : 
+To clean up the project: 
 $ scons -c
 
 Install
 --------
 
-On Unix systems, simply run as root : 
+On Unix systems, simply run as root: 
 # scons install
 
 This command will install include files in /usr/local/include/jsonrpc/include/ and 
@@ -30,9 +31,31 @@ libjsonrpc.so file in /usr/local/lib/
 Examples
 ---------
 
-JsonRpc-Cpp provides a simple TCP and UDP JSON-RPC server. After JsonRpc-Cpp install, run :
+JsonRpc-Cpp provides simple TCP and UDP JSON-RPC servers.
 
+After JsonRpc-Cpp installation, you can build the examples:
 $ scons examples
 
 This will build test/tcp-server and test/udp-server examples.
+Note that servers will be bind to localhost, port 8086.
+
+To run the TCP JSON-RPC server:
+$ test/tcp-server
+
+To test it, on another terminal, run:
+$ telnet localhost 8086
+{"jsonrpc":"2.0", "id":1, "method":"system.print"}
+
+You should see:
+{"id":1,"jsonrpc":"2.0","result":"success"}
+
+To run the UDP JSON-RPC server:
+$ test/udp-server
+
+To test it, on another terminal run:
+$ netcat -u localhost 8086
+{"jsonrpc":"2.0", "id":1, "method":"system.print"}
+
+You should see:
+{"id":1,"jsonrpc":"2.0","result":"success"}
 
