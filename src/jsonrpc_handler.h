@@ -125,7 +125,7 @@ namespace Json
          */
         virtual bool Call(const Json::Value& msg, Json::Value& response)
         {
-          (m_obj->*m_method)(msg, response);
+          return (m_obj->*m_method)(msg, response);
         }
 
         /**
