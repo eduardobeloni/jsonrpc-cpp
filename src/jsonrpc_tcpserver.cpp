@@ -74,7 +74,7 @@ namespace Json
           }
         }
 
-        m_jsonHandler.Process(buf, response);
+        m_jsonHandler.Process(msg, response);
 
         /* in case of notification message received, the response could be Json::Value::null */
         if(response != Json::Value::null)
