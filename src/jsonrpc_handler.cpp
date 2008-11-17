@@ -91,7 +91,7 @@ namespace Json
         methods[(*it)->GetName()] = (*it)->GetDescription();
       }
       
-      response["methods"] = methods;
+      response["result"] = methods;
       return false;
     }
 
