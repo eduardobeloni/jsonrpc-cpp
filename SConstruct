@@ -3,7 +3,7 @@
 #
 
 # Create an environment
-env = Environment()
+env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc']);
 
 install_dir = '/usr/local';
 lib_target  = 'jsonrpc';
@@ -25,6 +25,10 @@ env.Install(dir = install_dir + "/lib/", source = libjsonrpc);
 env.Install(dir = install_dir + "/include/jsonrpc/", source = lib_includes);
 env.Alias('install', [install_dir]);
 env.Alias('examples', ['test/tcp-server', 'test/udp-server']);
+
+# Doxygen
+doxygen = env.Doxygen("Doxyfile");
+env.Alias('doxygen', doxygen);
 
 # Default target when running scons without arguments
 Default(libjsonrpc);

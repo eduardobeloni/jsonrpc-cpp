@@ -1,3 +1,10 @@
+2008-10-17  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+
+  * Version 0.1.2   : - Fix undecoded netstring in TcpServer;
+                      - Fix "system.describe" response structure ("result" field);
+                      - Add doxygen command for scons.
+
 2008-09-22	Sebastien Vincent <sebastien.vincent@cppextrem.com>
 	
 	* Initial version.
+
