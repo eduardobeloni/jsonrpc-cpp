@@ -161,6 +161,11 @@ namespace Json
       m_jsonHandler.AddMethod(method);
     }
 
+    void Server::DeleteMethod(const std::string& method)
+    {
+      m_jsonHandler.DeleteMethod(method);
+    }
+
   } /* namespace Rpc */
 
 } /* namespace Json */

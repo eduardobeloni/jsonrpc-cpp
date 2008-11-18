@@ -141,6 +141,12 @@ namespace Json
          */
         void AddMethod(CallbackMethod* method);
 
+        /**
+         * \brief Delete a RPC method.
+         * \param method RPC method name
+         */
+        void DeleteMethod(const std::string& method);
+
       protected:
         /**
          * \brief Socket descriptor.

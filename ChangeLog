@@ -1,4 +1,4 @@
-2008-10-17  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+2008-11-17  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
   * Version 0.1.2   : - Fix undecoded netstring in TcpServer;
                       - Fix "system.describe" response structure ("result" field);
