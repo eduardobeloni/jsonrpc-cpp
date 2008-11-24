@@ -73,8 +73,8 @@ namespace Json
       {
         if((*it)->GetName() == name)
         {
-          m_methods.erase(it);
           delete (*it);
+          m_methods.erase(it);
           break;
         }
       }
