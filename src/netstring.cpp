@@ -27,7 +27,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace netstring
 {
@@ -49,9 +49,9 @@ namespace netstring
   std::string decode(const std::string& str)
   {
     unsigned long len = 0;
-    int index = 0; /* position of ":" */
-    int index2 = 0; /* position of "," */
-    int i = 0;
+    size_t index = 0; /* position of ":" */
+    size_t index2 = 0; /* position of "," */
+    size_t i = 0;
     const char* data = str.data();
     std::string ret;
 

@@ -53,7 +53,7 @@ namespace Json
       INVALID_REQUEST = -32600, /**< The received JSON not a valid JSON-RPC Request. */
       METHOD_NOT_FOUND = -32601, /**< The requested remote-procedure does not exist / is not available. */
       INVALID_PARAMS = -32602, /**< Invalid method parameters. */
-      INTERNAL_ERROR = -32603, /**< Internal JSON-RPC error. */
+      INTERNAL_ERROR = -32603 /**< Internal JSON-RPC error. */
     };
 
     /**

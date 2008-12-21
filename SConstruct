@@ -2,8 +2,11 @@
 # JsonRpc-Cpp build file
 #
 
+# configure compiler arguments
+cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror'];
+
 # Create an environment
-env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc']);
+env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
 
 install_dir = '/usr/local';
 lib_target  = 'jsonrpc';

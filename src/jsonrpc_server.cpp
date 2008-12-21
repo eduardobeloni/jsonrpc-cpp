@@ -24,11 +24,11 @@
 
 #include "jsonrpc_server.h"
 
+#include <cstdlib>
+#include <cstring>
+
 #ifndef _WIN32
-#include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-#include <unistd.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>

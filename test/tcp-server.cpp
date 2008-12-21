@@ -4,8 +4,8 @@
  * \author Sebastien Vincent
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include <jsonrpc/jsonrpc.h>
 
@@ -49,6 +49,10 @@ int main(int argc, char** argv)
 {
   Plop a;
   Json::Rpc::TcpServer server(std::string("127.0.0.1"), 8086);
+
+  /* to avoid compilation warnings */
+  argc = argc;
+  argv = argv;
 
   server.AddMethod(new Json::Rpc::RpcMethod<Plop>(a, &Plop::Print, std::string("system.print")));
 

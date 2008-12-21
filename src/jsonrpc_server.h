@@ -54,7 +54,7 @@ namespace Json
     enum EncapsulatedFormat
     {
       RAW, /**< Raw format. */ 
-      NETSTRING, /**< Encapsulate the message with NetString (see http://cr.yp.to/proto/netstrings.txt). */
+      NETSTRING /**< Encapsulate the message with NetString (see http://cr.yp.to/proto/netstrings.txt). */
 #if 0
       HTTP_POST, /**< Encapsulate the message in HTTP POST. */
       HTTP_GET, /**< Encapsulate the message in HTTP POST. */
@@ -68,7 +68,7 @@ namespace Json
     enum TransportProtocol
     {
       UDP = IPPROTO_UDP, /**< UDP protocol. */
-      TCP = IPPROTO_TCP, /**< TCP protocol. */
+      TCP = IPPROTO_TCP /**< TCP protocol. */
     };
 
     /**

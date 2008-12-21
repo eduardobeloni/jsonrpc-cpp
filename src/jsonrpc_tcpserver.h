@@ -27,9 +27,10 @@
 
 #include "jsonrpc_server.h"
 
+#include <stdint.h>
+
 #include <list>
 
-#include <stdint.h>
 #include <sys/types.h>
 
 namespace Json
