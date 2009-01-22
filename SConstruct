@@ -17,7 +17,7 @@ udpserver_sources = ['test/udp-server.cpp'];
 tcpserver_sources = ['test/tcp-server.cpp'];
 
 # Build the libjsonrpc
-libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources);
+libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=['json']);
 
 # Build examples
 tcpserver = env.Program(target = 'test/tcp-server', source = tcpserver_sources, LIBS=['json', 'jsonrpc']);
