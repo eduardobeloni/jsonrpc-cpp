@@ -31,6 +31,7 @@ env.Alias('examples', ['test/tcp-server', 'test/udp-server']);
 
 # Doxygen
 doxygen = env.Doxygen("Doxyfile");
+AlwaysBuild(doxygen);
 env.Alias('doxygen', doxygen);
 
 # Default target when running scons without arguments
