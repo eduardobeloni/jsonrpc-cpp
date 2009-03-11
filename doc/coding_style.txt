@@ -48,14 +48,16 @@ The C++ comments ('//') can be used as well as the C comments ('/* */').
 
 II) Code organization
 
-The code has to follow these recommandations : 
+The code has to follow these recommandations:
 - Always initialize your variables;
 - Put "static" keyword when functions / global variables is not used outside the file;
 - Try to avoid static variables in functions (try to make reentrant things);
-- All member variables of a class should be prefixed with "m_".
+- All member variables of a class must be prefixed with "m_";
+- Each global variable must be prefixed with "g_";
+- Put an empty line at the end of each file.
 
 Each file, function, structure, classe and global variable MUST be documented using doxygen. Here is a
-complete example :
+complete example:
 
 /**
  * \file my_file.h
@@ -109,10 +111,10 @@ class MyClass
 };
 
 /**
- * \var my_var
+ * \var g_my_var
  * \brief Description of this global variable.
  */
-struct my_struct* my_var = NULL;
+struct my_struct* g_my_var = NULL;
 
 /**
  * \brief Doing something
@@ -123,4 +125,10 @@ struct my_struct* my_var = NULL;
 int foo(int a, char b);
 
 #endif /* MY_FILE_H */
+
+III) Standards
+---------------
+
+In order to compile and run on many operating systems the code has to be portable. Thus
+it is strongly recommended to write code which respect C++98 and POSIX standards.
 

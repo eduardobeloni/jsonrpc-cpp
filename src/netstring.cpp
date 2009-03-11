@@ -59,14 +59,14 @@ namespace netstring
     if(index == std::string::npos)
     {
       /* error */
-      throw std::runtime_error("netstring error : missing ':' character");
+      throw std::runtime_error("netstring error: missing ':' character");
     }
     
     index2 = str.find_last_of(",");
     if(index2 == std::string::npos)
     {
       /* error */
-      throw std::runtime_error("netstring error : missing ',' character");
+      throw std::runtime_error("netstring error: missing ',' character");
     }
 
     for(i = 0 ; i < index ; i++)
@@ -78,14 +78,14 @@ namespace netstring
       else
       {
         /* error */
-        throw std::runtime_error("netstring error : parsing error");
+        throw std::runtime_error("netstring error: parsing error");
       }
     }
 
     if(len != str.length() - index - 2)
     {
       /* error */
-      throw std::runtime_error("netstring error : size mismatch");
+      throw std::runtime_error("netstring error: size mismatch");
     }
 
     ret.assign(str, index + 1, len);
@@ -123,7 +123,7 @@ int main(int argc, char** argv)
   }
   catch(std::runtime_error e)
   {
-    std::cout << "Exception raised : " << e.what() << std::endl;
+    std::cout << "Exception raised: " << e.what() << std::endl;
   }
 
   return 0;

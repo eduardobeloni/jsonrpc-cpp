@@ -13,15 +13,17 @@ lib_target  = 'jsonrpc';
 lib_sources = ['src/jsonrpc_handler.cpp', 'src/jsonrpc_server.cpp', 'src/jsonrpc_udpserver.cpp', 'src/jsonrpc_tcpserver.cpp', 'src/netstring.cpp'];
 lib_includes = ['src/jsonrpc.h', 'src/jsonrpc_handler.h', 'src/jsonrpc_server.h', 'src/jsonrpc_udpserver.h', 'src/jsonrpc_tcpserver.h', 'src/netstring.h'];
 
-udpserver_sources = ['test/udp-server.cpp'];
-tcpserver_sources = ['test/tcp-server.cpp'];
-
 # Build the libjsonrpc
 libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=['json']);
 
 # Build examples
-tcpserver = env.Program(target = 'test/tcp-server', source = tcpserver_sources, LIBS=['json', 'jsonrpc']);
-udpserver = env.Program(target = 'test/udp-server', source = udpserver_sources, LIBS=['json', 'jsonrpc']);
+test_sources = ['test/test.cpp'];
+udpserver_sources = ['test/udp-server.cpp'];
+tcpserver_sources = ['test/tcp-server.cpp'];
+
+test = env.Object(test_sources);
+tcpserver = env.Program(target = 'test/tcp-server', source = [tcpserver_sources, test], LIBS=['json', 'jsonrpc']);
+udpserver = env.Program(target = 'test/udp-server', source = [udpserver_sources, test], LIBS=['json', 'jsonrpc']);
 
 # Install script
 env.Install(dir = install_dir + "/lib/", source = libjsonrpc);
