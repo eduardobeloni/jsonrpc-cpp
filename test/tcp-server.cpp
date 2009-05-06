@@ -1,3 +1,21 @@
+/*
+ *  JsonRpc-Cpp - JSON-RPC implementation.
+ *  Copyright (C) 2008 Sebastien Vincent <sebastien.vincent@cppextrem.com>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /**
  * \file tcp-server.cpp
  * \brief Simple JSON-RPC TCP server.
@@ -6,10 +24,34 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <csignal>
 
 #include <jsonrpc/jsonrpc.h>
 
-#include "test.h"
+#include "test-rpc.h"
+
+/**
+ * \var g_run
+ * \brief Running state of the program.
+ */
+static volatile bool g_run = false;
+
+/**
+ * \brief Signal management.
+ * \param code signal code
+ */
+static void signal_handler(int code)
+{
+  switch(code)
+  {
+    case SIGINT:
+    case SIGTERM:
+      g_run = false;
+      break;
+    default:
+      break;
+  }
+}
 
 /**
  * \brief Entry point of the program.
@@ -19,32 +61,51 @@
  */
 int main(int argc, char** argv)
 {
-  Test a;
+  TestRpc a;
   Json::Rpc::TcpServer server(std::string("127.0.0.1"), 8086);
 
   /* to avoid compilation warnings */
   argc = argc;
   argv = argv;
 
-  server.AddMethod(new Json::Rpc::RpcMethod<Test>(a, &Test::Print, std::string("system.print")));
+  if(signal(SIGTERM, signal_handler) == SIG_ERR)
+  {
+    std::cout << "Error signal SIGTERM will not be handled" << std::endl;
+  }
+
+  if(signal(SIGINT, signal_handler) == SIG_ERR)
+  {
+    std::cout << "Error signal SIGINT will not be handled" << std::endl;
+  }
+
+  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Print, std::string("system.print")));
+  
+  /* server.SetEncapsulatedFormat(Json::Rpc::NETSTRING); */
 
   if(!server.Bind())
   {
     std::cout << "Bind failed" << std::endl;
-    return -1;
+    exit(EXIT_FAILURE);
   }
 
   if(!server.Listen())
   {
     std::cout << "Listen failed" << std::endl;
-    return -1;
+    exit(EXIT_FAILURE);
   }
 
-  while(1)
+  g_run = true;
+
+  std::cout << "Start JSON-RPC TCP server" << std::endl;
+
+  while(g_run)
   {
     server.WaitMessage(1000);
   }
 
-  return 0;
+  std::cout << "Stop JSON-RPC TCP server" << std::endl;
+  server.Close();
+
+  return EXIT_SUCCESS;
 }
 

@@ -29,6 +29,7 @@
 #include <list>
 
 #include <json/json.h>
+#include "jsonrpc_common.h"
 
 /**
  * \namespace Json
@@ -42,20 +43,6 @@ namespace Json
    */
   namespace Rpc
   {
-    /**
-     * \enum ErrorCode
-     * \brief JSON-RPC error codes.
-     * \note Value from -32099 to -32000 are reserved for implementation-defined server-errors.
-     */
-    enum ErrorCode
-    {
-      PARSING_ERROR = -32700, /**< Invalid JSON. An error occurred on the server while parsing the JSON text. */
-      INVALID_REQUEST = -32600, /**< The received JSON not a valid JSON-RPC Request. */
-      METHOD_NOT_FOUND = -32601, /**< The requested remote-procedure does not exist / is not available. */
-      INVALID_PARAMS = -32602, /**< Invalid method parameters. */
-      INTERNAL_ERROR = -32603 /**< Internal JSON-RPC error. */
-    };
-
     /**
      * \class CallbackMethod
      * \brief Callback-style method.
@@ -189,7 +176,7 @@ namespace Json
 
         /**
          * \brief Add a new RPC method.
-         * \param method the method
+         * \param method RPC method to add
          * \warning The "method" parameter MUST be dynamically allocated (using new).
          * \warning Json::Rpc::Handler object takes care of freeing method memory.\n
          * The way of calling this method is handler.AddMethod(new RpcMethod(...));

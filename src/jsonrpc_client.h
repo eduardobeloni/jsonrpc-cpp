@@ -1,6 +1,6 @@
 /*
  *  JsonRpc-Cpp - JSON-RPC implementation.
- *  Copyright (C) 2008 Sebastien Vincent <sebastien.vincent@cppextrem.com>
+ *  Copyright (C) 2008-2009 Sebastien Vincent <sebastien.vincent@cppextrem.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,13 +17,13 @@
  */
 
 /**
- * \file jsonrpc_server.h
- * \brief JSON-RPC server.
+ * \file jsonrpc_client.h
+ * \brief JSON-RPC client.
  * \author Sebastien Vincent
  */
 
-#ifndef JSONRPC_SERVER_H
-#define JSONRPC_SERVER_H
+#ifndef JSONRPC_CLIENT_H
+#define JSONRPC_CLIENT_H
 
 #include "jsonrpc_handler.h"
 #include "jsonrpc_common.h"
@@ -34,32 +34,23 @@ namespace Json
   namespace Rpc
   {
     /**
-     * \class Server
-     * \brief Abstract JSON-RPC server.
+     * \class Client
+     * \brief Abstract JSON-RPC client.
      */
-    class Server
+    class Client
     {
       public:
         /**
          * \brief Constructor.
-         * \param address network address or FQDN to bind
-         * \param port local port to bind
+         * \param address remote network address or FQDN to contact
+         * \param port remote local port to contact
          */
-        Server(const std::string& address, uint16_t port);
+        Client(const std::string& address, uint16_t port);
 
         /**
          * \brief Destructor.
          */
-        virtual ~Server();
-
-        /**
-         * \brief Wait message.
-         *
-         * This function do a select() on the socket and Process() immediately 
-         * the JSON-RPC message.
-         * \param ms millisecond to wait (0 means infinite)
-         */
-        virtual void WaitMessage(uint32_t ms) = 0;
+        virtual ~Client();
 
         /**
          * \brief Set the encapsulated format (default is RAW).
@@ -92,37 +83,25 @@ namespace Json
         uint16_t GetPort() const;
 
         /**
-         * \brief Bind the socket.
+         * \brief Connect to the remote machine
          * \return true if success, false otherwise
+         * \note on connectionless protocol like UDP, this function
+         * always returns true even if remote peer is not reachable.
          */
-        bool Bind();
+        virtual bool Connect() = 0;
 
         /**
          * \brief Receive data from the network.
-         * \param fd file descriptor on which receive
+         * \param data if data is received it will put in this reference
          * \return number of bytes received or -1 if error
          * \note This method will blocked until data comes.
          */
-        virtual ssize_t Recv(int fd) = 0;
-        
+        virtual ssize_t Recv(std::string& data) = 0;
+
         /**
          * \brief Close socket.
-         * \note It should be overriden for connection-oriented protocol 
-         * like TCP to properly close all client sockets.
          */
         virtual void Close();
-
-        /**
-         * \brief Add a RPC method.
-         * \param method RPC method
-         */
-        void AddMethod(CallbackMethod* method);
-
-        /**
-         * \brief Delete a RPC method.
-         * \param method RPC method name
-         */
-        void DeleteMethod(const std::string& method);
 
       protected:
         /**
@@ -134,11 +113,6 @@ namespace Json
          * \brief Transport protocol of the socket.
          */
         enum TransportProtocol m_protocol;
-
-        /**
-         * \brief JSON-RPC handler.
-         */
-        Handler m_jsonHandler;
 
       private:
         /**
@@ -161,5 +135,5 @@ namespace Json
 
 } /* namespace Json */
 
-#endif /* JSONRPC_SERVER_H */
+#endif /* JSONRPC_CLIENT_H */
 

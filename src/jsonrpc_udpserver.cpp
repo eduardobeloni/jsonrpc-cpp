@@ -22,9 +22,9 @@
  * \author Sebastien Vincent
  */
 
-#include "jsonrpc_udpserver.h"
-
 #include <stdexcept>
+
+#include "jsonrpc_udpserver.h"
 
 #include "netstring.h"
 
@@ -43,7 +43,7 @@ namespace Json
     {
     }
 
-    ssize_t UdpServer::Recv()
+    ssize_t UdpServer::Recv(int fd)
     {
       Json::Value response;
       ssize_t nb = -1;
@@ -51,7 +51,7 @@ namespace Json
       struct sockaddr_storage addr;
       socklen_t addrlen = sizeof(struct sockaddr_storage);
 
-      nb = recvfrom(m_sock, buf, sizeof(buf), 0, (struct sockaddr*)&addr, &addrlen);
+      nb = ::recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr*)&addr, &addrlen);
 
       if(nb > 0)
       {
@@ -85,7 +85,7 @@ namespace Json
             rep = netstring::encode(rep);
           }
 
-          if(sendto(m_sock, rep.c_str(), rep.length(), 0, (struct sockaddr*)&addr, addrlen) == -1)
+          if(::sendto(fd, rep.c_str(), rep.length(), 0, (struct sockaddr*)&addr, addrlen) == -1)
           {
             /* error */
           }
@@ -113,7 +113,7 @@ namespace Json
       {
         if(FD_ISSET(m_sock, &fdsr))
         {
-          Recv();
+          Recv(m_sock);
         }
       }
       else

@@ -25,13 +25,13 @@
 #ifndef JSONRPC_TCPSERVER_H
 #define JSONRPC_TCPSERVER_H
 
-#include "jsonrpc_server.h"
-
 #include <stdint.h>
+
+#include <sys/types.h>
 
 #include <list>
 
-#include <sys/types.h>
+#include "jsonrpc_server.h"
 
 namespace Json
 {
@@ -61,6 +61,7 @@ namespace Json
          * \brief Receive data from the network.
          * \param fd socket descriptor to receive data
          * \return number of bytes received or -1 if error
+         * \note This method will blocked until data comes.
          */
         virtual ssize_t Recv(int fd);
 
@@ -83,6 +84,11 @@ namespace Json
          * \return -1 if error, 0 otherwise
          */
         bool Accept();
+        
+        /**
+         * \brief Close listen socket and all client sockets.
+         */
+        void Close();
 
         /**
          * \brief Get the list of clients.

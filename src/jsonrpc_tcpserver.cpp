@@ -22,9 +22,9 @@
  * \author Sebastien Vincent
  */
 
-#include "jsonrpc_tcpserver.h"
-
 #include <stdexcept>
+
+#include "jsonrpc_tcpserver.h"
 
 #include "netstring.h"
 
@@ -41,11 +41,10 @@ namespace Json
 
     TcpServer::~TcpServer()
     {
-      for(std::list<int>::iterator it = m_clients.begin() ; it != m_clients.end() ; it++)
+      if(m_sock != -1)
       {
-        ::close((*it));
+        Close();
       }
-      m_clients.erase(m_clients.begin(), m_clients.end());
     }
 
     ssize_t TcpServer::Recv(int fd)
@@ -188,6 +187,18 @@ namespace Json
 
       m_clients.push_back(client);
       return true;
+    }
+
+    void TcpServer::Close()
+    {
+      /* close all client sockets */
+      for(std::list<int>::iterator it = m_clients.begin() ; it != m_clients.end() ; it++)
+      {
+        ::close((*it));
+      }
+      m_clients.erase(m_clients.begin(), m_clients.end());
+      
+      /* listen socket should be closed in Server destructor */
     }
 
     std::list<int> TcpServer::GetClients() const

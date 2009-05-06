@@ -1,6 +1,6 @@
 /*
  *  JsonRpc-Cpp - JSON-RPC implementation.
- *  Copyright (C) 2008 Sebastien Vincent <sebastien.vincent@cppextrem.com>
+ *  Copyright (C) 2008-2009 Sebastien Vincent <sebastien.vincent@cppextrem.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,19 +17,17 @@
  */
 
 /**
- * \file jsonrpc_udpserver.h
- * \brief JSON-RPC UDP server.
+ * \file jsonrpc_udpclient.h
+ * \brief JSON-RPC UDP client.
  * \author Sebastien Vincent
  */
 
-#ifndef JSONRPC_UDPSERVER_H
-#define JSONRPC_UDPSERVER_H
+#ifndef JSONRPC_UDPCLIENT_H 
+#define JSONRPC_UDPCLIENT_H 
 
-#include <stdint.h>
+#include <iostream>
 
-#include <sys/types.h>
-
-#include "jsonrpc_server.h"
+#include "jsonrpc_client.h"
 
 namespace Json
 {
@@ -37,10 +35,10 @@ namespace Json
   namespace Rpc
   {
     /**
-     * \class UdpServer
-     * \brief JSON-RPC UDP server implementation.
+     * \class UdpClient
+     * \brief JSON-RPC UDP client.
      */
-    class UdpServer : public Server
+    class UdpClient : public Client
     {
       public:
         /**
@@ -48,34 +46,51 @@ namespace Json
          * \param address network address or FQDN to bind
          * \param port local port to bind
          */
-        UdpServer(const std::string& address, uint16_t port);
+        UdpClient(const std::string& address, uint16_t port);
 
         /**
          * \brief Destructor.
          */
-        virtual ~UdpServer();
+        virtual ~UdpClient();
+
+        /**
+         * \brief Connect to the remote machine
+         * \return true if success, false otherwise
+         * \note on connectionless protocol like UDP, this function
+         * always returns true even if remote peer is not reachable.
+         */
+        virtual bool Connect(); 
 
         /**
          * \brief Receive data from the network.
-         * \param fd file descriptor on which receive
+         * \param data if data is received it will put in this reference
          * \return number of bytes received or -1 if error
          * \note This method will blocked until data comes.
          */
-        virtual ssize_t Recv(int fd);
-
+        virtual ssize_t Recv(std::string& data);
+        
         /**
-         * \brief Wait message.
-         *
-         * This function do a select() on the socket and Process() immediately 
-         * the JSON-RPC message.
-         * \param ms millisecond to wait (0 means infinite)
+         * \brief Send data.
+         * \param data data to send
+         * \return number of bytes sent or -1 if error
          */
-        virtual void WaitMessage(uint32_t ms);
+        ssize_t Send(const std::string& data);
+
+      private:
+        /**
+         * \brief Remote socket address.
+         */
+        struct sockaddr_storage m_sockaddr;
+        
+        /**
+         * \brief Remote socket address length.
+         */
+        socklen_t m_sockaddrlen;
     };
 
   } /* namespace Rpc */
 
 } /* namespace Json */
 
-#endif /* JSONRPC_UDPSERVER_H */
+#endif /* JSONRPC_UDPCLIENT_H */
 

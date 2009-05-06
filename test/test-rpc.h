@@ -16,3 +16,38 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * \file test-rpc.h
+ * \brief Test example.
+ * \author Sebastien Vincent
+ */
+
+#ifndef TEST_RPC_H
+#define TEST_RPC_H 
+
+#include <json/json.h>
+
+/**
+ * \class TestRpc
+ * \brief Example.
+ */
+class TestRpc
+{
+  public:
+    /**
+     * \brief Reply with success.
+     * \param root JSON-RPC request
+     * \param response JSON-RPC response
+     * \return true if correctly processed, false otherwise
+     */
+    bool Print(const Json::Value& root, Json::Value& response);
+
+    /**
+     * \brief Get the description in JSON format.
+     * \return JSON description
+     */
+    Json::Value GetDescription();
+};
+
+#endif /* TEST_RPC_H */
+

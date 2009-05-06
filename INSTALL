@@ -7,17 +7,46 @@ Requirements
 - C++ compiler toolchain;
 - python;
 - scons;
-- JsonCpp library installed (http://jsoncpp.sourceforge.net/): 
-  Once JsonCpp is compiled, copy the include files to /usr/local/include/json/ directory and libjson_*.so (found in bin/<your_platform>/) to /usr/local/lib/libjson.so
+- JsonCpp source files (http://jsoncpp.sourceforge.net/).
 
-Build
-------
+Build JsonCpp
+--------------
+Get JsonCpp source code from SVN repository (there are no releases):
+
+$ svn co https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk/jsoncpp jsoncpp 
+$ cd jsoncpp/
+
+Compilation,
+for Linux and MacOS X:
+$ scons platform=linux-gcc
+
+for Windows (MinGW):
+$ scons platform=mingw
+
+for Windows (Visual Studio):
+$ scons platform=msvc80 (or msvc70, msvc71 depending on your Visual Studio version)
+
+You have to manually copy the shared library and include files,
+for Linux: 
+# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*libmt.so /usr/local/lib/
+
+for MacOS X: 
+# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*.dylib /usr/local/lib/
+
+Finally copy the include files:
+# cp -r include /usr/local/include/json
+
+Build JsonRpc-Cpp
+------------------
 
 To build the project: 
-$ scons
+$ scons build 
 
 To clean up the project: 
 $ scons -c
+
+To build documentation:
+$ scons doc
 
 Install
 --------
@@ -28,34 +57,40 @@ On Unix systems, simply run as root:
 This command will install include files in /usr/local/include/jsonrpc/include/ and 
 libjsonrpc.so file in /usr/local/lib/
 
+To uninstall, run as root:
+# scons -c install
+
 Examples
 ---------
 
-JsonRpc-Cpp provides simple TCP and UDP JSON-RPC servers.
+JsonRpc-Cpp provides simple JSON-RPC TCP and UDP servers as well as TCP and UDP clients.
 
 After JsonRpc-Cpp installation, you can build the examples:
 $ scons examples
 
-This will build test/tcp-server and test/udp-server examples.
-Note that servers will be bind to localhost, port 8086.
+This will build test/tcp-server, test/udp-server, test/tcp-client and test/udp-client examples.
+Note that servers will be bind to localhost, port 8086 and clients will connect to the same port.
 
 To run the TCP JSON-RPC server:
 $ test/tcp-server
 
-To test it, on another terminal, run:
-$ telnet localhost 8086
-{"jsonrpc":"2.0", "id":1, "method":"system.print"}
+To run the TCP JSON-RPC client:
+$ test/tcp-client
 
-You should see:
-{"id":1,"jsonrpc":"2.0","result":"success"}
+You should see: 
+Query is: {"id":1,"jsonrpc":"2.0","method":"system.print"}
+
+Received: {"id":1,"jsonrpc":"2.0","result":"success"}
+
 
 To run the UDP JSON-RPC server:
 $ test/udp-server
 
-To test it, on another terminal run:
-$ netcat -u localhost 8086
-{"jsonrpc":"2.0", "id":1, "method":"system.print"}
+To run the JSON-RPC UDP client:
+$ test/udp-client
 
-You should see:
-{"id":1,"jsonrpc":"2.0","result":"success"}
+You should see: 
+Query is: {"id":1,"jsonrpc":"2.0","method":"system.print"}
+
+Received: {"id":1,"jsonrpc":"2.0","result":"success"}
 

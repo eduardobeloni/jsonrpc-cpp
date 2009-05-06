@@ -17,64 +17,35 @@
  */
 
 /**
- * \file jsonrpc_server.cpp
- * \brief JSON-RPC server.
+ * \file jsonrpc_udpclient.cpp
+ * \brief JSON-RPC UDP client.
  * \author Sebastien Vincent
  */
 
-#include "jsonrpc_server.h"
+#include "jsonrpc_udpclient.h"
 
-#include <cstdlib>
+#include "netstring.h"
+
 #include <cstring>
 
-namespace Json 
+namespace Json
 {
 
   namespace Rpc
   {
 
-    Server::Server(const std::string& address, uint16_t port)
+    UdpClient::UdpClient(const std::string& address, uint16_t port) : Client(address, port)
     {
-      m_sock = -1;
-      m_address = address;
-      m_port = port;
-      SetEncapsulatedFormat(Json::Rpc::RAW);
+      m_protocol = UDP;
+      memset(&m_sockaddr, 0x00, sizeof(struct sockaddr_storage));
+      m_sockaddrlen = 0;
     }
 
-    Server::~Server()
+    UdpClient::~UdpClient()
     {
-      if(m_sock != -1)
-      {
-        Close();
-      }
     }
 
-    void Server::SetEncapsulatedFormat(enum EncapsulatedFormat format)
-    {
-      m_format = format;
-    }
-
-    enum EncapsulatedFormat Server::GetEncapsulatedFormat() const
-    {
-      return m_format;
-    }
-
-    int Server::GetSocket() const
-    {
-      return m_sock;
-    }
-
-    std::string Server::GetAddress() const
-    {
-      return m_address;
-    }
-
-    uint16_t Server::GetPort() const
-    {
-      return m_port;
-    }
-
-    bool Server::Bind()
+    bool UdpClient::Connect()
     {
       struct addrinfo hints;
       struct addrinfo* res = NULL;
@@ -86,79 +57,85 @@ namespace Json
         return false;
       }
 
-      if(!m_port || m_address == "")
+      if(!GetPort() || GetAddress() == "")
       {
         m_sock = -1;
         return false;
       }
 
-      snprintf(service, sizeof(service), "%u", m_port);
+      snprintf(service, sizeof(service), "%u", GetPort());
       service[sizeof(service)-1] = 0x00;
 
       memset(&hints, 0, sizeof(struct addrinfo));
       hints.ai_family = AF_UNSPEC;
       hints.ai_socktype = m_protocol == UDP ? SOCK_DGRAM : SOCK_STREAM;
       hints.ai_protocol = m_protocol;
-      hints.ai_flags = AI_PASSIVE;
+      hints.ai_flags = 0;
 
-      if(getaddrinfo(m_address.c_str(), service, &hints, &res) != 0)
+      if(getaddrinfo(GetAddress().c_str(), service, &hints, &res) != 0)
       {
         return false;
       }
 
       for(p = res ; p ; p = p->ai_next)
       {
-        int on = 1;
-
         m_sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
 
         if(m_sock == -1)
         {
           continue;
         }
-
-        setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int));
-
-        /* accept IPv6 OR IPv4 on the same socket */
-        on = 1;
-        setsockopt(m_sock, IPPROTO_IPV6, IPV6_V6ONLY, &on, sizeof(on));
-
-        if(::bind(m_sock, p->ai_addr, p->ai_addrlen) == -1)
-        {
-          ::close(m_sock);
-          m_sock = -1;
-          continue;
-        }
+        
+        memcpy(&m_sockaddr, p->ai_addr, p->ai_addrlen);
+        m_sockaddrlen = p->ai_addrlen;
 
         /* ok so now we have a socket bound, break the loop */
         break;
       }
-
+      
       freeaddrinfo(res);
       p = NULL;
-
+      
       if(m_sock > 0)
       {
         return true;
       }
-
+      
       return false;
     }
-    
-    void Server::Close()
+
+    ssize_t UdpClient::Send(const std::string& data)
     {
-      ::close(m_sock);
-      m_sock = -1;
+      std::string rep = data;
+
+      /* encoding if any */
+      if(GetEncapsulatedFormat() == Json::Rpc::NETSTRING)
+      {
+        rep = netstring::encode(rep);
+      }
+
+      return ::sendto(m_sock, rep.c_str(), rep.length(), 0, (struct sockaddr*)&m_sockaddr, m_sockaddrlen);
     }
 
-    void Server::AddMethod(CallbackMethod* method)
+    ssize_t UdpClient::Recv(std::string& data)
     {
-      m_jsonHandler.AddMethod(method);
-    }
+      char buf[1500];
+      ssize_t nb = -1;
 
-    void Server::DeleteMethod(const std::string& method)
-    {
-      m_jsonHandler.DeleteMethod(method);
+      if((nb = ::recvfrom(m_sock, buf, sizeof(buf), 0, NULL, NULL)) == -1)
+      {
+        return -1;
+      }
+
+      data = std::string(buf, nb);
+
+      /* decoding if any */
+      if(GetEncapsulatedFormat() == Json::Rpc::NETSTRING)
+      {
+        data = netstring::decode(data);
+      }
+
+      return nb;
     }
 
   } /* namespace Rpc */

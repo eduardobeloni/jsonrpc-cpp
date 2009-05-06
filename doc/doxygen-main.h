@@ -2,7 +2,7 @@
  * \file doxygen-main.h
  * \brief Documentation main page.
  * \author Sebastien Vincent
- * \date 2008
+ * \date 2008-2009
  */
 
 /**
@@ -17,6 +17,7 @@
  * JsonRpc-Cpp provides a JSON-RPC kernel class called Json::Rpc::Handler that contains the RPC methods, check incoming JSON-RPC message,
  * reply either with success or error code (in case parsing failed, ...).
  *
- * JsonRpc-Cpp provides also simple Json::Rpc::UdpServer and Json::Rpc::TcpServer implementations.
+ * JsonRpc-Cpp provides also simple JSON-RPC TCP and UDP server implementations (Json::Rpc::TcpServer and Json::Rpc::UdpServer) as well
+ * as simple JSON-RPC TCP and UDP client implementations (Json::Rpc::TcpClient and Json::Rpc::UdpClient).
  */
 
