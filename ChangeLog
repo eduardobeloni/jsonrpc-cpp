@@ -2,6 +2,7 @@
 
   * Version 0.2     : - Possibility to compile with debug symbols;
                       - Add simple JSON-RPC TCP and UDP examples;
+                      - Add unit tests (with CppUnit);
                       - Add scons help documentation (scons -h);
                       - Add JsonRpc-Cpp version in jsonrpc.h;
                       - Add JsonCpp installation howto.

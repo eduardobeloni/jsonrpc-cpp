@@ -92,7 +92,7 @@ namespace Json
       }
       
       response["result"] = methods;
-      return false;
+      return true;
     }
 
     std::string Handler::GetString(Json::Value value)
@@ -164,7 +164,7 @@ namespace Json
           return rpc->Call(root, response);
         }
       }
-
+      
       /* forge an error response */
       response["id"] = root.isMember("id") ? root["id"] : Json::Value::null;
       response["jsonrpc"] = "2.0";
@@ -200,45 +200,4 @@ namespace Json
   } /* namespace Rpc */
 
 } /* namespace Json */
-
-#if 0
-
-/* test */
-
-class Plop
-{
-  public:
-    bool Print(const Json::Value& root, Json::Value& response)
-    {
-      std::cout << "Plop" << std::endl;
-      response["jsonrpc"] = 2.0;
-      response["id"] = root["id"];
-      response["result"] = "success";
-      return true;
-    }
-};
-
-int main(int argc, char** argv)
-{
-  const std::string str = "{\"jsonrpc\": \"2.0\", \"method\": \"system.print\", \"params\": [42, 23], \"id\": 1, \"dd\": null}";
-  Json::Rpc::Handler jsonHandler;
-  Plop a;
-  Json::Value response;
-  const std::string strMethod = "system.print";
-  Json::Rpc::RpcMethod<Plop>* method = new Json::Rpc::RpcMethod<Plop>(a, &Plop::Print, strMethod);
-
-  jsonHandler.AddMethod(method);
-  if(jsonHandler.Process(str, response))
-  {
-    std::cout << response << std::endl;
-  }
-
-  jsonHandler.DeleteMethod("system.print");
-
-  jsonHandler.Process(str, response);
-  std::cout << response << std::endl;
-  return 0;
-}
-
-#endif
 

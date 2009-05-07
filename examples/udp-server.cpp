@@ -56,7 +56,7 @@ static void signal_handler(int code)
 /**
  * \brief Entry point of the program.
  * \param argc number of argument
- * \param array of arguments
+ * \param argv array of arguments
  * \return EXIT_SUCCESS or EXIT_FAILURE
  */
 int main(int argc, char** argv)

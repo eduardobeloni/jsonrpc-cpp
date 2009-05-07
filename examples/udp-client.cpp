@@ -17,35 +17,37 @@
  */
 
 /**
- * \file tcp-client.cpp
- * \brief Simple JSON-RPC TCP client.
+ * \file udp-client.cpp
+ * \brief Simple JSON-RPC UDP client.
  * \author Sebastien Vincent
  */
 
 #include <cstdio>
 #include <cstdlib>
 
+#include <iostream>
+
 #include <jsonrpc/jsonrpc.h>
 
 /**
  * \brief Entry point of the program.
  * \param argc number of argument
- * \param array of arguments
+ * \param argv array of arguments
  * \return EXIT_SUCCESS or EXIT_FAILURE
  */
 int main(int argc, char** argv)
 {
-  Json::Rpc::TcpClient tcpClient(std::string("127.0.0.1"), 8086);
+  Json::Rpc::UdpClient udpClient(std::string("127.0.0.1"), 8086);
   Json::Value query;
   Json::FastWriter writer;
   std::string queryStr;
   std::string responseStr;
-  
+
   /* avoid compilation warnings */
   argc = argc;
   argv = argv;
 
-  if(!tcpClient.Connect())
+  if(!udpClient.Connect())
   {
     std::cout << "Cannot connect to remote peer!" << std::endl;
     exit(EXIT_FAILURE);
@@ -59,14 +61,14 @@ int main(int argc, char** argv)
   queryStr = writer.write(query);
   std::cout << "Query is: " << queryStr << std::endl;
 
-  if(tcpClient.Send(queryStr) == -1)
+  if(udpClient.Send(queryStr) == -1)
   {
     std::cout << "Error while sending data!" << std::endl;
     exit(EXIT_FAILURE);
   }
-
+  
   /* wait the response */
-  if(tcpClient.Recv(responseStr) != -1)
+  if(udpClient.Recv(responseStr) != -1)
   {
     std::cout << "Received: " << responseStr << std::endl;
   }
@@ -75,7 +77,7 @@ int main(int argc, char** argv)
     std::cout << "Error while receiving data!" << std::endl;
   }
 
-  tcpClient.Close();
+  udpClient.Close();
 
   return EXIT_SUCCESS;
 }

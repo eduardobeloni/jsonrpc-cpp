@@ -43,7 +43,7 @@ To build the project:
 $ scons build 
 
 To clean up the project: 
-$ scons -c
+$ scons -c all
 
 To build documentation:
 $ scons doc
@@ -68,14 +68,14 @@ JsonRpc-Cpp provides simple JSON-RPC TCP and UDP servers as well as TCP and UDP 
 After JsonRpc-Cpp installation, you can build the examples:
 $ scons examples
 
-This will build test/tcp-server, test/udp-server, test/tcp-client and test/udp-client examples.
+This will build tcp-server, udp-server, tcp-client and udp-client examples.
 Note that servers will be bind to localhost, port 8086 and clients will connect to the same port.
 
 To run the TCP JSON-RPC server:
-$ test/tcp-server
+$ examples/tcp-server
 
 To run the TCP JSON-RPC client:
-$ test/tcp-client
+$ examples/tcp-client
 
 You should see: 
 Query is: {"id":1,"jsonrpc":"2.0","method":"system.print"}
@@ -84,13 +84,23 @@ Received: {"id":1,"jsonrpc":"2.0","result":"success"}
 
 
 To run the UDP JSON-RPC server:
-$ test/udp-server
+$ examples/udp-server
 
 To run the JSON-RPC UDP client:
-$ test/udp-client
+$ examples/udp-client
 
 You should see: 
 Query is: {"id":1,"jsonrpc":"2.0","method":"system.print"}
 
 Received: {"id":1,"jsonrpc":"2.0","result":"success"}
+
+Unit tests
+-----------
+
+To use unit tests you need to install CppUnit and to have installed JsonRpc-Cpp library
+and includes (scons install).
+
+Then you can compile and run unit tests with:
+$ scons test
+$ scons runtest
 

@@ -17,68 +17,33 @@
  */
 
 /**
- * \file udp-client.cpp
- * \brief Simple JSON-RPC UDP client.
+ * \file test-runner.cpp
+ * \brief Run all the tests.
  * \author Sebastien Vincent
  */
 
-#include <cstdio>
 #include <cstdlib>
 
-#include <iostream>
-
-#include <jsonrpc/jsonrpc.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
 
 /**
  * \brief Entry point of the program.
  * \param argc number of argument
- * \param array of arguments
+ * \param argv array of arguments
  * \return EXIT_SUCCESS or EXIT_FAILURE
  */
 int main(int argc, char** argv)
 {
-  Json::Rpc::UdpClient udpClient(std::string("127.0.0.1"), 8086);
-  Json::Value query;
-  Json::FastWriter writer;
-  std::string queryStr;
-  std::string responseStr;
+  CppUnit::TextUi::TestRunner runner;
+  CppUnit::TestFactoryRegistry& registry  = CppUnit::TestFactoryRegistry::getRegistry();
 
   /* avoid compilation warnings */
   argc = argc;
   argv = argv;
 
-  if(!udpClient.Connect())
-  {
-    std::cout << "Cannot connect to remote peer!" << std::endl;
-    exit(EXIT_FAILURE);
-  }
-
-  /* build JSON-RPC query */
-  query["jsonrpc"] = "2.0";
-  query["id"] = 1;
-  query["method"] = "system.print";
-
-  queryStr = writer.write(query);
-  std::cout << "Query is: " << queryStr << std::endl;
-
-  if(udpClient.Send(queryStr) == -1)
-  {
-    std::cout << "Error while sending data!" << std::endl;
-    exit(EXIT_FAILURE);
-  }
-  
-  /* wait the response */
-  if(udpClient.Recv(responseStr) != -1)
-  {
-    std::cout << "Received: " << responseStr << std::endl;
-  }
-  else
-  {
-    std::cout << "Error while receiving data!" << std::endl;
-  }
-
-  udpClient.Close();
+  runner.addTest(registry.makeTest());
+  runner.run();
 
   return EXIT_SUCCESS;
 }
-
