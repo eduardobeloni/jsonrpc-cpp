@@ -22,10 +22,11 @@
  * \author Sebastien Vincent
  */
 
-#include "jsonrpc_server.h"
-
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
+#include "jsonrpc_server.h"
 
 namespace Json 
 {

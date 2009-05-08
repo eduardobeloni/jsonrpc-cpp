@@ -25,21 +25,22 @@ lib_includes = ['src/jsonrpc.h', 'src/jsonrpc_handler.h', 'src/jsonrpc_server.h'
 libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=['json']);
 
 # Build examples
-test_sources = ['examples/test-rpc.cpp'];
+examples_sources = ['examples/test-rpc.cpp', lib_sources];
 udpserver_sources = ['examples/udp-server.cpp'];
 tcpserver_sources = ['examples/tcp-server.cpp'];
 udpclient_sources = ['examples/udp-client.cpp'];
 tcpclient_sources = ['examples/tcp-client.cpp'];
 
-test = env.Object(test_sources);
-tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, test], LIBS=['json', 'jsonrpc']);
-udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, test], LIBS=['json', 'jsonrpc']);
-tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources], LIBS=['json', 'jsonrpc']);
-udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources], LIBS=['json', 'jsonrpc']);
+examples_common = env.Object(examples_sources);
+tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS=['json']);
+udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS=['json']);
+tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS=['json']);
+udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS=['json']);
 
 # Build unit tests
+test_common = env.Object(lib_sources);
 unittest_sources = ['test/test-runner.cpp', 'test/test-core.cpp', 'test/test-netstring.cpp']
-unittest = env.Program(target = 'test/test-runner', source = [unittest_sources], LIBS=['json', 'jsonrpc', 'cppunit']);
+unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=['json', 'cppunit']);
 
 # Run unit tests
 runtest = env.Command('runtest', None, "test/test-runner $SOURCE $TARGET");

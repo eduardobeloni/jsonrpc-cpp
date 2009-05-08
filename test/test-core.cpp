@@ -59,8 +59,9 @@ namespace Json
     class TestCore : public CppUnit::TestFixture
     {
       CPPUNIT_TEST_SUITE(Json::Rpc::TestCore);
-      CPPUNIT_TEST(testAddMethod);
+      CPPUNIT_TEST(testMethod);
       CPPUNIT_TEST(testJsonRpcVersion);
+      CPPUNIT_TEST(testJsonRpcParsing);
       CPPUNIT_TEST_SUITE_END();
 
       public:
@@ -81,10 +82,9 @@ namespace Json
       }
 
       /**
-       * \brief Test if we can add method and successfully 
-       * call it.
+       * \brief Test if we can add/remove method.
        */
-      void testAddMethod()
+      void testMethod()
       {
         const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"system.print\"}";
         const std::string str2 = "{\"jsonrpc\":\"2.0\", \"method\":\"method_does_not_exist\"}";
@@ -95,6 +95,9 @@ namespace Json
 
         CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
         CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
+
+        m_handler->DeleteMethod(std::string("system.print"));
+        CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
       }
 
       /**
@@ -110,6 +113,36 @@ namespace Json
         CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
       }
 
+      /**
+       * \brief Test if parsing JSON-RPC query works as expected.
+       */
+      void testJsonRpcParsing()
+      {
+        /* missing a comma */
+        const std::string str = "{\"jsonrpc\":\"2.0\" \"method\":\"system.describe\"}";
+        /* missing a "}" */
+        const std::string str2 = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\"";
+        /* missing method parameter */
+        const std::string str3 = "{\"jsonrpc\":\"2.0\", \"test\":\"system.describe\"}";
+        /* "params" argument missing */
+        const std::string str4 = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\", \"params\":}";
+        /* anything but not in JSON format */
+        const std::string str5 = "jsonrpc blabla\n\n";
+        /* valid query with array as "params"'s argument */
+        const std::string str6 = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\", \"params\":[10, 11]}";
+        /* valid query with object as "params"'s argument */
+        const std::string str7 = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\", \"params\":{\"id\":1, \"value\":504}}";
+        Json::Value response;
+
+        CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
+        CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
+        CPPUNIT_ASSERT(m_handler->Process(str3, response) == false);
+        CPPUNIT_ASSERT(m_handler->Process(str4, response) == false);
+        CPPUNIT_ASSERT(m_handler->Process(str5, response) == false);
+        CPPUNIT_ASSERT(m_handler->Process(str6, response) == true);
+        CPPUNIT_ASSERT(m_handler->Process(str7, response) == true);
+      }
+
       private:
       /**
        * \brief Handler for JSON-RPC query.
@@ -121,5 +154,6 @@ namespace Json
 
 } /* namespace Json */
 
+/* add the test suite in the global registry */
 CPPUNIT_TEST_SUITE_REGISTRATION(Json::Rpc::TestCore);
 

@@ -25,7 +25,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <jsonrpc/jsonrpc.h>
+#include "../src/jsonrpc.h"
 
 /**
  * \brief Entry point of the program.

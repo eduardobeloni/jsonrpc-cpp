@@ -22,9 +22,9 @@
  * \author Sebastien Vincent
  */
 
-#include "jsonrpc_client.h"
-
 #include <cstring>
+
+#include "jsonrpc_client.h"
 
 namespace Json
 {

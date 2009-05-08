@@ -150,5 +150,6 @@ namespace netstring
 
 } /* namespace netstring */
 
+/* add the test suite in the global registry */
 CPPUNIT_TEST_SUITE_REGISTRATION(netstring::TestNetstring);
 
