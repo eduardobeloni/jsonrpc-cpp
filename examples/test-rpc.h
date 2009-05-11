@@ -18,7 +18,7 @@
 
 /**
  * \file test-rpc.h
- * \brief Test example.
+ * \brief RPC example.
  * \author Sebastien Vincent
  */
 
@@ -29,7 +29,7 @@
 
 /**
  * \class TestRpc
- * \brief Example.
+ * \brief RPC example.
  */
 class TestRpc
 {

@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 
   if(!tcpClient.Connect())
   {
-    std::cout << "Cannot connect to remote peer!" << std::endl;
+    std::cerr << "Cannot connect to remote peer!" << std::endl;
     exit(EXIT_FAILURE);
   }
 
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 
   if(tcpClient.Send(queryStr) == -1)
   {
-    std::cout << "Error while sending data!" << std::endl;
+    std::cerr << "Error while sending data!" << std::endl;
     exit(EXIT_FAILURE);
   }
 
@@ -72,7 +72,7 @@ int main(int argc, char** argv)
   }
   else
   {
-    std::cout << "Error while receiving data!" << std::endl;
+    std::cerr << "Error while receiving data!" << std::endl;
   }
 
   tcpClient.Close();

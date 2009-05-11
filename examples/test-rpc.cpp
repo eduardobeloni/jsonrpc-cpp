@@ -26,7 +26,7 @@
 
 bool TestRpc::Print(const Json::Value& root, Json::Value& response)
 {
-  std::cout << "Plop" << std::endl;
+  std::cout << "Receive query: " << root << std::endl;
   response["jsonrpc"] = "2.0";
   response["id"] = root["id"];
   response["result"] = "success";

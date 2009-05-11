@@ -1,6 +1,7 @@
 2009-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
   * Version 0.2     : - Possibility to compile with debug symbols;
+                      - Add NetstringException class;
                       - Add simple JSON-RPC TCP and UDP examples;
                       - Add unit tests (with CppUnit);
                       - Add scons help documentation (scons -h);

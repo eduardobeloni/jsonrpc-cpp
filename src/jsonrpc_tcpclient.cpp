@@ -135,7 +135,14 @@ namespace Json
       /* decoding if any */
       if(GetEncapsulatedFormat() == Json::Rpc::NETSTRING)
       {
-        data = netstring::decode(data);
+        try
+        {
+          data = netstring::decode(data);
+        }
+        catch(netstring::NetstringException e)
+        {
+          std::cerr << e.what() << std::endl;
+        }
       }
 
       return nb;

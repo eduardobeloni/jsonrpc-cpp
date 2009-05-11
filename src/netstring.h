@@ -20,7 +20,6 @@
  * \file netstring.h
  * \brief NetString implementation (http://cr.yp.to/proto/netstrings.txt).
  * \author Sebastien Vincent
- * \todo Add a subclass of exception to manage netstring exceptions.
  */
 
 #ifndef NETSTRING_H
@@ -48,6 +47,37 @@ namespace netstring
    * \return decoded string
    */
   std::string decode(const std::string& netstr);
+
+  /**
+   * \class NetstringException
+   * \brief Netstring related exception.
+   */
+  class NetstringException : public std::exception
+  {
+    public:
+      /**
+       * \brief Constructor.
+       * \param msg error message
+       */
+      NetstringException(const std::string& msg="") throw();
+
+      /**
+       * \brief Destructor.
+       */
+      virtual ~NetstringException() throw();
+
+      /**
+       * \brief Get the exception message.
+       * \return message C-string
+       */
+      virtual const char* what() const throw();
+
+    private:
+      /**
+       * Exception message.
+       */
+      std::string m_msg;
+  };
 
 } /* namespace netstring */
 

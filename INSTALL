@@ -57,11 +57,18 @@ Install
 On Unix systems, simply run as root: 
 # scons install
 
-This command will install include files in /usr/local/include/jsonrpc/include/ and 
+Default will install include files in /usr/local/include/jsonrpc/ and 
 libjsonrpc.so file in /usr/local/lib/
 
+To choose another installation directory add "prefix" option: 
+$ scons install prefix='/path/to/installation/directory'
+
+
 To uninstall, run as root:
-# scons -c install
+# scons -c install 
+
+For custom installation directory:
+$ scons -c install prefix='/path/to/installation/directory'
 
 Examples
 ---------

@@ -4,15 +4,22 @@
 # Configure compiler arguments
 cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
 
+# Command line parsing
+
 # Build with debug symbols or not
 if ARGUMENTS.get('mode', 0) == 'debug':
   cflags.append('-g');
+
+# Installation directory
+if ARGUMENTS.get('prefix', 0) != 0:
+  install_dir =  ARGUMENTS.get('prefix', ''); 
+else:
+  install_dir = '/usr/local';
 
 # Create an environment
 env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
 
 # Sources and name of the JsonRpc-Cpp library
-install_dir = '/usr/local';
 lib_target  = 'jsonrpc';
 lib_sources = ['src/jsonrpc_handler.cpp', 'src/jsonrpc_server.cpp', 'src/jsonrpc_client.cpp',
                'src/jsonrpc_udpserver.cpp', 'src/jsonrpc_tcpserver.cpp', 'src/jsonrpc_udpclient.cpp',

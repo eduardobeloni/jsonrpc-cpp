@@ -24,10 +24,10 @@
 
 #include "netstring.h"
 
+#include <cstdio>
+
 #include <iostream>
 #include <stdexcept>
-
-#include <cstdio>
 
 namespace netstring
 {
@@ -59,14 +59,14 @@ namespace netstring
     if(index == std::string::npos)
     {
       /* error */
-      throw std::runtime_error("netstring error: missing ':' character");
+      throw NetstringException("netstring: missing ':' character");
     }
     
     index2 = str.find_last_of(",");
     if(index2 == std::string::npos)
     {
       /* error */
-      throw std::runtime_error("netstring error: missing ',' character");
+      throw NetstringException("netstring: missing ',' character");
     }
 
     for(i = 0 ; i < index ; i++)
@@ -78,18 +78,32 @@ namespace netstring
       else
       {
         /* error */
-        throw std::runtime_error("netstring error: parsing error");
+        throw NetstringException("netstring: parsing error");
       }
     }
 
-    if(len != str.length() - index - 2)
+    if(len != (str.length() - index - 2))
     {
       /* error */
-      throw std::runtime_error("netstring error: size mismatch");
+      throw NetstringException("netstring: size mismatch");
     }
 
     ret.assign(str, index + 1, len);
     return ret;
+  }
+  
+  NetstringException::NetstringException(const std::string& msg) throw()
+  {
+    m_msg = msg;
+  }
+
+  NetstringException::~NetstringException() throw()
+  {
+  }
+
+  const char* NetstringException::what() const throw()
+  {
+    return m_msg.c_str();
   }
 
 } /* namespace netstring */

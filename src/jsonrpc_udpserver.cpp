@@ -63,10 +63,10 @@ namespace Json
           {
             msg = netstring::decode(msg);
           }
-          catch(std::runtime_error e)
+          catch(netstring::NetstringException e)
           {
             /* error parsing NetString */
-            std::cout << "problem" << std::endl;
+            std::cerr << e.what() << std::endl;
             return -1;
           }
         }
