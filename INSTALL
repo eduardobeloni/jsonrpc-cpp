@@ -111,5 +111,5 @@ CppUnit framework (http://cppunit.sourceforge.net/) is needed in order to use un
 
 To compile and run unit tests:
 $ scons test
-$ scons runtest
+$ scons run-test
 

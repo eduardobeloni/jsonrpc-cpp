@@ -137,7 +137,7 @@ namespace Json
         {
           data = netstring::decode(data);
         }
-        catch(netstring::NetstringException e)
+        catch(const netstring::NetstringException& e)
         {
           std::cerr << e.what() << std::endl;
         }

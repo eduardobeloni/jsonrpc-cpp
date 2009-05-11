@@ -66,7 +66,7 @@ namespace Json
           {
             msg = netstring::decode(msg);
           }
-          catch(netstring::NetstringException e)
+          catch(const netstring::NetstringException& e)
           {
             /* error parsing Netstring */
             std::cerr << e.what() << std::endl;

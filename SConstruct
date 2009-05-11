@@ -68,7 +68,7 @@ env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient]);
 env.Alias('all', ['build', 'examples', 'doc', 'test']);
 env.Alias('install', [install_dir]);
 env.Alias('test', ['build', unittest]);
-env.Alias('runtest', ['test', runtest]);
+env.Alias('run-test', ['test', runtest]);
 
 # Help documentation
 Help("""

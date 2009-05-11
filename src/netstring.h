@@ -35,20 +35,6 @@
 namespace netstring
 {
   /**
-   * \brief Encode a string into netstring.
-   * \param str string to encode
-   * \return encoded netstring
-   */
-  std::string encode(const std::string& str);
-
-  /**
-   * \brief Decode a netstring into string.
-   * \param netstr netstring
-   * \return decoded string
-   */
-  std::string decode(const std::string& netstr);
-
-  /**
    * \class NetstringException
    * \brief Netstring related exception.
    */
@@ -78,6 +64,20 @@ namespace netstring
        */
       std::string m_msg;
   };
+
+  /**
+   * \brief Encode a string into netstring.
+   * \param str string to encode
+   * \return encoded netstring
+   */
+  std::string encode(const std::string& str);
+
+  /**
+   * \brief Decode a netstring into string.
+   * \param netstr netstring
+   * \return decoded string
+   */
+  std::string decode(const std::string& netstr) throw(netstring::NetstringException);
 
 } /* namespace netstring */
 
