@@ -86,7 +86,7 @@ namespace Json
     {
       public:
         /**
-         * \brief the T method signature.
+         * \brief T method signature.
          */
         typedef bool (T::*Method)(const Json::Value& msg, Json::Value& response);
 
@@ -234,7 +234,7 @@ namespace Json
         Json::Reader m_reader;
 
         /**
-         * \brief JSON write.
+         * \brief JSON writer.
          */
         Json::FastWriter m_writer;
 
