@@ -65,24 +65,25 @@ env.Alias('doxygen', doxygen);
 # Alias for target
 env.Alias('build', [libjsonrpc]);
 env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient]);
-env.Alias('all', ['build', 'examples', 'doc', 'test']);
 env.Alias('install', [install_dir]);
-env.Alias('test', ['build', unittest]);
-env.Alias('run-test', ['test', runtest]);
+env.Alias('build-test', ['build', unittest]);
+env.Alias('test', ['build-test', runtest]);
+env.Alias('all', ['build', 'examples', 'doc', 'test']);
 
 # Help documentation
 Help("""
 Type: 'scons build' to build JsonRpc-Cpp library,
-      'scons install' to install the JsonRpc-Cpp library in the system,
+      'scons install' to install shared library and include files on the system,
       'scons doc' to build documentation (doxygen),
-      'scons test' to build unit tests,
-      'scons runtest' to run unit tests,
-      'scons -c' to clean object files,
-      'scons -c install' to uninstall library and include files,
-      'scons -c doc' to remove documentation files,
+      'scons build-test' to build unit tests,
+      'scons test' to run unit tests,
+      'scons all' to build everything and run unit tests,
+      'scons -c' to cleanup object and shared library files,
+      'scons -c install' to uninstall shared library and include files,
+      'scons -c doc' to cleanup documentation files,
       'scons -c all' to cleanup everything.
       \n
-      Default target when launching scons without argument is 'scons build'.
+      Default target when launching scons without arguments is 'scons build'.
 """);
 
 # Default target when running scons without arguments

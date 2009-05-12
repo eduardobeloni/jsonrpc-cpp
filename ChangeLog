@@ -2,7 +2,7 @@
 
   * Version 0.2     : - Possibility to compile with debug symbols;
                       - Add NetstringException class;
-                      - Add simple JSON-RPC TCP and UDP examples;
+                      - Add simple JSON-RPC TCP and UDP client examples;
                       - Add unit tests (with CppUnit);
                       - Add scons help documentation (scons -h);
                       - Add JsonRpc-Cpp version in jsonrpc.h;
