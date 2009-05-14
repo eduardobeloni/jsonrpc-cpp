@@ -5,7 +5,7 @@
 
 import sys; 
 
-cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
+cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-O2'];
 
 # Command line parsing
 
@@ -19,8 +19,13 @@ if ARGUMENTS.get('prefix', 0) != 0:
 else:
   install_dir = '/usr/local';
 
+platform = "default"; 
+if sys.platform == 'win32':
+  platform = "mingw";
+  cflags.append('-D_WIN32_WINNT=0x0501');
+
 # Create an environment
-env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
+env = Environment(tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
 
 # Sources and name of the JsonRpc-Cpp library
 lib_target  = 'jsonrpc';

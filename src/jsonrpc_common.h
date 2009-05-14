@@ -38,7 +38,17 @@
 #include <netdb.h>
 
 #else
+
+#ifndef _MSC_VER
+#include <stdint.h>
+#endif
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <winsock2.h>
+#include <ws2tcpip.h>
+
+#define close closesocket
 #endif
 
 namespace Json

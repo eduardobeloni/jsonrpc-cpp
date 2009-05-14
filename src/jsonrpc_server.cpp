@@ -22,6 +22,8 @@
  * \author Sebastien Vincent
  */
 
+#include <sys/types.h>
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -118,11 +120,15 @@ namespace Json
           continue;
         }
 
+#ifndef _WIN32
         setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int));
 
         /* accept IPv6 OR IPv4 on the same socket */
         on = 1;
         setsockopt(m_sock, IPPROTO_IPV6, IPV6_V6ONLY, &on, sizeof(on));
+#else
+        on = 0;
+#endif
 
         if(::bind(m_sock, p->ai_addr, p->ai_addrlen) == -1)
         {
