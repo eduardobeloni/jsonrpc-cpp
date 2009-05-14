@@ -47,6 +47,12 @@ int main(int argc, char** argv)
   argc = argc;
   argv = argv;
 
+  if(networking::init())
+  {
+    std::cerr << "Networking initialization failed" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
   if(!udpClient.Connect())
   {
     std::cerr << "Cannot connect to remote peer!" << std::endl;
@@ -78,6 +84,7 @@ int main(int argc, char** argv)
   }
 
   udpClient.Close();
+  networking::cleanup();
 
   return EXIT_SUCCESS;
 }

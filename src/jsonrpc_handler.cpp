@@ -18,7 +18,7 @@
 
 /**
  * \file jsonrpc_handler.cpp
- * \brief JSON-RPC processor engine.
+ * \brief JSON-RPC server processor engine.
  * \author Sebastien Vincent
  */
 

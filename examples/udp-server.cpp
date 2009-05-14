@@ -68,6 +68,12 @@ int main(int argc, char** argv)
   argc = argc;
   argv = argv;
 
+  if(networking::init())
+  {
+    std::cerr << "Networking initialization failed" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
   if(signal(SIGTERM, signal_handler) == SIG_ERR)
   {
     std::cout << "Error signal SIGTERM will not be handled" << std::endl;
@@ -99,6 +105,7 @@ int main(int argc, char** argv)
 
   std::cout << "Stop JSON-RPC UDP server" << std::endl;
   server.Close();
+  networking::cleanup();
 
   return EXIT_SUCCESS;
 }

@@ -18,7 +18,7 @@
 
 /**
  * \file jsonrpc_handler.h
- * \brief JSON-RPC processor engine.
+ * \brief JSON-RPC server processor engine.
  * \author Sebastien Vincent
  */
 
@@ -86,6 +86,7 @@ namespace Json
     {
       public:
         /**
+         * \typedef Method
          * \brief T method signature.
          */
         typedef bool (T::*Method)(const Json::Value& msg, Json::Value& response);

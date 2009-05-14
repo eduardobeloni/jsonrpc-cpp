@@ -2,6 +2,9 @@
 # JsonRpc-Cpp build file.
 #
 # Configure compiler arguments
+
+import sys; 
+
 cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
 
 # Command line parsing
@@ -21,15 +24,37 @@ env = Environment(tools = ["default", "doxygen"], toolpath = ['.', './doc'], CXX
 
 # Sources and name of the JsonRpc-Cpp library
 lib_target  = 'jsonrpc';
-lib_sources = ['src/jsonrpc_handler.cpp', 'src/jsonrpc_server.cpp', 'src/jsonrpc_client.cpp',
-               'src/jsonrpc_udpserver.cpp', 'src/jsonrpc_tcpserver.cpp', 'src/jsonrpc_udpclient.cpp',
-               'src/jsonrpc_tcpclient.cpp', 'src/netstring.cpp'];
-lib_includes = ['src/jsonrpc.h', 'src/jsonrpc_handler.h', 'src/jsonrpc_server.h', 'src/jsonrpc_client.h',
-                'src/jsonrpc_udpserver.h', 'src/jsonrpc_tcpserver.h', 'src/jsonrpc_udpclient.h',
-                'src/jsonrpc_tcpclient.h', 'src/jsonrpc_common.h', 'src/netstring.h'];
+
+lib_sources = ['src/jsonrpc_handler.cpp',
+               'src/jsonrpc_server.cpp',
+               'src/jsonrpc_client.cpp',
+               'src/jsonrpc_udpserver.cpp',
+               'src/jsonrpc_tcpserver.cpp',
+               'src/jsonrpc_udpclient.cpp',
+               'src/jsonrpc_tcpclient.cpp',
+               'src/netstring.cpp',
+               'src/networking.cpp'];
+
+lib_includes = ['src/jsonrpc.h',
+                'src/jsonrpc_handler.h',
+                'src/jsonrpc_server.h',
+                'src/jsonrpc_client.h',
+                'src/jsonrpc_udpserver.h',
+                'src/jsonrpc_tcpserver.h',
+                'src/jsonrpc_udpclient.h',
+                'src/jsonrpc_tcpclient.h',
+                'src/jsonrpc_common.h',
+                'src/netstring.h',
+                'src/networking.h'];
 
 # Build libjsonrpc
-libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=['json']);
+libs = ['json'];
+
+# Add winsock library for MS Windows
+if sys.platform == 'win32':
+  libs.append('ws2_32');
+
+libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=libs);
 
 # Build examples
 examples_sources = ['examples/test-rpc.cpp', lib_sources];
@@ -39,15 +64,18 @@ udpclient_sources = ['examples/udp-client.cpp'];
 tcpclient_sources = ['examples/tcp-client.cpp'];
 
 examples_common = env.Object(examples_sources);
-tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS=['json']);
-udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS=['json']);
-tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS=['json']);
-udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS=['json']);
+tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS=libs);
+udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS=libs);
+tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS=libs);
+udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS=libs);
 
 # Build unit tests
 test_common = env.Object(lib_sources);
-unittest_sources = ['test/test-runner.cpp', 'test/test-core.cpp', 'test/test-netstring.cpp']
-unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=['json', 'cppunit']);
+unittest_sources = ['test/test-runner.cpp',
+                    'test/test-core.cpp',
+                    'test/test-netstring.cpp']
+
+unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=[libs, 'cppunit']);
 
 # Run unit tests
 runtest = env.Command('runtest', None, "test/test-runner $SOURCE $TARGET");

@@ -55,6 +55,7 @@
 #include "jsonrpc_tcpclient.h"
 
 #include "netstring.h"
+#include "networking.h"
 
 #endif /* JSONRPC_H */
 
