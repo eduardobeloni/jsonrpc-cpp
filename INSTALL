@@ -9,6 +9,9 @@ Requirements
 - scons;
 - JsonCpp source files (http://jsoncpp.sourceforge.net/).
 
+For the moment only MinGW compiler is supported to build
+JsonRpc-Cpp on MS Windows.
+
 Build JsonCpp
 --------------
 
@@ -24,18 +27,19 @@ $ scons platform=linux-gcc
 for Windows (MinGW):
 $ scons platform=mingw
 
-for Windows (Visual Studio):
-$ scons platform=msvc80 (or msvc70, msvc71 depending on your Visual Studio version)
-
-You have to manually copy the shared library and include files,
+Installation,
 for Linux: 
-# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*libmt.so /usr/local/lib/
+# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*libmt.so /usr/local/lib/libjson.so
+# cp -r include/json /usr/local/include/json
 
 for MacOS X: 
-# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*.dylib /usr/local/lib/
+# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*.dylib /usr/local/lib/libjson.dylib
+# cp -r include/json /usr/local/include/json
 
-Finally copy the include files:
-# cp -r include /usr/local/include/json
+for Windows:
+# xcopy buildscons\mingw\src\lib_json\libjon_mingw*.a C:\MinGW\lib\libjson.a
+# mkdir C:\MinGW\include\json
+# xcopy /S include\json C:\MinGW\include\json
 
 Build JsonRpc-Cpp
 ------------------
@@ -52,23 +56,25 @@ $ scons -c all
 To build documentation:
 $ scons doc
 
-Install
---------
+Installation
+------------
 
-On Unix systems, simply run as root: 
+Run (with root or admin privileges): 
 # scons install
 
 Default will install include files in /usr/local/include/jsonrpc/ and 
-libjsonrpc.so file in /usr/local/lib/
+libjsonrpc.so file in /usr/local/lib/ on Unix-like and C:\MinGW\include and
+C:\MinGW\lib respectively for MS Windows.
 
 To choose another installation directory add "prefix" option: 
 $ scons install prefix='/path/to/installation/directory'
 
+Note: You have to double '\' character on MS Windows (i.e. C:\\MinGW\\).
 
-To uninstall, run as root:
+To uninstall, run (with root or admin privileges):
 # scons -c install 
 
-For custom installation directory:
+For custom uninstallation:
 $ scons -c install prefix='/path/to/installation/directory'
 
 Examples

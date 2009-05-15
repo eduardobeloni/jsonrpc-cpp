@@ -1,11 +1,11 @@
 ## 
 # JsonRpc-Cpp build file.
 #
-# Configure compiler arguments
 
 import sys; 
 
-cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-O2'];
+# Configure compiler arguments
+cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
 
 # Command line parsing
 
@@ -17,12 +17,19 @@ if ARGUMENTS.get('mode', 0) == 'debug':
 if ARGUMENTS.get('prefix', 0) != 0:
   install_dir =  ARGUMENTS.get('prefix', ''); 
 else:
-  install_dir = '/usr/local';
+  if sys.platform == 'win32':
+    install_dir = 'C:\\MinGW\\';
+  else:
+    install_dir = '/usr/local';
 
 platform = "default"; 
 if sys.platform == 'win32':
   platform = "mingw";
+  # Define _WIN32_WINNT to have getaddrinfo
   cflags.append('-D_WIN32_WINNT=0x0501');
+  # Remove flags that cause compilation errors
+  cflags.remove('-std=c++98');
+  cflags.remove('-Werror');
 
 # Create an environment
 env = Environment(tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
@@ -95,7 +102,7 @@ Clean(doxygen, "doc/doxygen.pyc");
 AlwaysBuild(doxygen);
 env.Alias('doxygen', doxygen);
 
-# Alias for target
+# Alias for targets
 env.Alias('build', [libjsonrpc]);
 env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient]);
 env.Alias('install', [install_dir]);
