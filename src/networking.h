@@ -73,7 +73,7 @@ namespace networking
 
   /**
    * \brief Initialize networking.
-   * \return true if network is correctly initialized
+   * \return true if network is correctly initialized, false otherwise
    * \note On MS Windows, this step is mandatory to use
    * socket API (socket(), bind(), recvfrom(), ...).
    */
@@ -91,10 +91,10 @@ namespace networking
    * \param protocol transport protocol used
    * \param address remote address
    * \param port remote port
-   * \param sockaddr if function succeed integer, sockaddr 
+   * \param sockaddr if function succeed, sockaddr 
    * representation of address/port
    * \param addrlen if function succeed, length of sockaddr
-   * \return positive integer if success, -1 otherwise
+   * \return socket descriptor if success, -1 otherwise
    */
   int connect(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
 
@@ -103,10 +103,10 @@ namespace networking
    * \param protocol transport protocol used
    * \param address local address
    * \param port local port
-   * \param sockaddr if function succeed integer, sockaddr 
+   * \param sockaddr if function succeed, sockaddr 
    * representation of address/port
    * \param addrlen if function succeed, length of sockaddr
-   * \return positive integer if success, -1 otherwise
+   * \return socket descriptor if success, -1 otherwise
    */
   int bind(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
 

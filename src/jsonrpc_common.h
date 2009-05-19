@@ -18,7 +18,7 @@
 
 /**
  * \file jsonrpc_common.h
- * \brief Utils function and enumeration.
+ * \brief Common functions and enumerations for JsonRpc-Cpp.
  * \author Sebastien Vincent
  */
 

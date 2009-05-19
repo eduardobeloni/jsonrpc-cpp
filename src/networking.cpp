@@ -45,6 +45,7 @@ namespace networking
 #ifdef _WIN32
     ret = (WSAStartup(MAKEWORD(2, 0), &wsaData) == 0);
 #else
+    /* unix-like */
     ret = true;
 #endif
 
