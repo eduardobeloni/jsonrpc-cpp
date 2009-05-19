@@ -25,12 +25,11 @@
 #ifndef JSONRPC_TCPSERVER_H
 #define JSONRPC_TCPSERVER_H
 
-#include <stdint.h>
-
 #include <sys/types.h>
 
 #include <list>
 
+#include "jsonrpc_common.h"
 #include "jsonrpc_server.h"
 
 namespace Json

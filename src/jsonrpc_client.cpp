@@ -38,6 +38,8 @@ namespace Json
       m_address = address;
       m_port = port;
       SetEncapsulatedFormat(Json::Rpc::RAW);
+      memset(&m_sockaddr, 0x00, sizeof(struct sockaddr_storage));
+      m_sockaddrlen = 0;
     }
 
     Client::~Client()
@@ -71,6 +73,13 @@ namespace Json
     uint16_t Client::GetPort() const
     {
       return m_port;
+    }
+
+    bool Client::Connect()
+    {
+      m_sock = networking::connect(m_protocol, GetAddress(), GetPort(), &m_sockaddr, &m_sockaddrlen);
+
+      return (m_sock != -1) ? true : false;
     }
 
     void Client::Close()

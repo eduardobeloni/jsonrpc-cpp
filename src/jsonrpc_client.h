@@ -27,8 +27,10 @@
 
 #include <sys/types.h>
 
-#include "jsonrpc_handler.h"
 #include "jsonrpc_common.h"
+#include "jsonrpc_handler.h"
+
+#include "networking.h"
 
 namespace Json
 {
@@ -90,7 +92,7 @@ namespace Json
          * \note on connectionless protocol like UDP, this function
          * always returns true even if remote peer is not reachable.
          */
-        virtual bool Connect() = 0;
+        virtual bool Connect();
 
         /**
          * \brief Receive data from the network.
@@ -114,7 +116,17 @@ namespace Json
         /**
          * \brief Transport protocol of the socket.
          */
-        enum TransportProtocol m_protocol;
+        enum networking::TransportProtocol m_protocol;
+
+        /**
+         * \brief Remote socket address.
+         */
+        struct sockaddr_storage m_sockaddr;
+
+        /**
+         * \brief Remote socket address length.
+         */
+        socklen_t m_sockaddrlen;
 
       private:
         /**

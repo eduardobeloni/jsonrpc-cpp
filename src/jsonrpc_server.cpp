@@ -79,77 +79,9 @@ namespace Json
 
     bool Server::Bind()
     {
-      struct addrinfo hints;
-      struct addrinfo* res = NULL;
-      struct addrinfo* p = NULL;
-      char service[8];
+      m_sock = networking::bind(m_protocol, m_address, m_port, NULL, NULL);
 
-      if(m_sock > 0)
-      {
-        return false;
-      }
-
-      if(!m_port || m_address == "")
-      {
-        m_sock = -1;
-        return false;
-      }
-
-      snprintf(service, sizeof(service), "%u", m_port);
-      service[sizeof(service)-1] = 0x00;
-
-      memset(&hints, 0, sizeof(struct addrinfo));
-      hints.ai_family = AF_UNSPEC;
-      hints.ai_socktype = m_protocol == UDP ? SOCK_DGRAM : SOCK_STREAM;
-      hints.ai_protocol = m_protocol;
-      hints.ai_flags = AI_PASSIVE;
-
-      if(getaddrinfo(m_address.c_str(), service, &hints, &res) != 0)
-      {
-        return false;
-      }
-
-      for(p = res ; p ; p = p->ai_next)
-      {
-        int on = 1;
-
-        m_sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-
-        if(m_sock == -1)
-        {
-          continue;
-        }
-
-#ifndef _WIN32
-        setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int));
-
-        /* accept IPv6 OR IPv4 on the same socket */
-        on = 1;
-        setsockopt(m_sock, IPPROTO_IPV6, IPV6_V6ONLY, &on, sizeof(on));
-#else
-        on = 0;
-#endif
-
-        if(::bind(m_sock, p->ai_addr, p->ai_addrlen) == -1)
-        {
-          ::close(m_sock);
-          m_sock = -1;
-          continue;
-        }
-
-        /* ok so now we have a socket bound, break the loop */
-        break;
-      }
-
-      freeaddrinfo(res);
-      p = NULL;
-
-      if(m_sock > 0)
-      {
-        return true;
-      }
-
-      return false;
+      return (m_sock != -1) ? true : false;
     }
     
     void Server::Close()

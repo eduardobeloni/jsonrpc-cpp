@@ -55,14 +55,6 @@ namespace Json
         virtual ~TcpClient();
 
         /**
-         * \brief Connect to the remote machine
-         * \return true if success, false otherwise
-         * \note on connectionless protocol like UDP, this function
-         * always returns true even if remote peer is not reachable.
-         */
-        virtual bool Connect();
-
-        /**
          * \brief Receive data from the network.
          * \param data if data is received it will put in this reference
          * \return number of bytes received or -1 if error

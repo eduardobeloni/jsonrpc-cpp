@@ -27,15 +27,6 @@
 
 #ifndef _WIN32
 #include <stdint.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-
-#include <unistd.h>
-
-#include <netinet/in.h>
-
-#include <netdb.h>
 
 #else
 
@@ -43,12 +34,6 @@
 #include <stdint.h>
 #endif
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-#define close closesocket
 #endif
 
 namespace Json
@@ -70,16 +55,6 @@ namespace Json
 #endif
     };
 
-    /**
-     * \enum TransportProtocol
-     * \brief Transport protocol.
-     */
-    enum TransportProtocol
-    {
-      UDP = IPPROTO_UDP, /**< UDP protocol. */
-      TCP = IPPROTO_TCP /**< TCP protocol. */
-    };
-      
     /**
      * \enum ErrorCode
      * \brief JSON-RPC error codes.

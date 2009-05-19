@@ -36,7 +36,7 @@ namespace Json
 
     TcpServer::TcpServer(const std::string& address, uint16_t port) : Server(address, port)
     {
-      m_protocol = TCP;
+      m_protocol = networking::TCP;
     }
 
     TcpServer::~TcpServer()

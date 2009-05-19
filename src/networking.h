@@ -22,12 +22,55 @@
  * \author Sebastien Vincent
  */
 
+#ifndef NETWORKING_H
+#define NETWORKING_H
+
+#ifdef _WIN32
+
+#ifndef _MSC_VER
+#include <stdint.h>
+#endif
+
+#include <windows.h>
+#include <winsock2.h>
+
+typedef int socklen_t;
+#define close closesocket
+
+#else
+
+#include <stdint.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+
+#include <unistd.h>
+
+#include <netinet/in.h>
+
+#include <netdb.h>
+
+#endif
+
+#include <string>
+
 /**
  * \namespace networking
  * \brief Networking related functions.
  */
 namespace networking
 {
+  /**
+   * \enum TransportProtocol
+   * \brief Transport protocol.
+   */
+  enum TransportProtocol
+  {
+    UDP = IPPROTO_UDP, /**< UDP protocol. */
+    TCP = IPPROTO_TCP /**< TCP protocol. */
+  };
+
   /**
    * \brief Initialize networking.
    * \return true if network is correctly initialized
@@ -43,5 +86,31 @@ namespace networking
    */
   void cleanup();
 
+  /**
+   * \brief Connect to remote machine.
+   * \param protocol transport protocol used
+   * \param address remote address
+   * \param port remote port
+   * \param sockaddr if function succeed integer, sockaddr 
+   * representation of address/port
+   * \param addrlen if function succeed, length of sockaddr
+   * \return positive integer if success, -1 otherwise
+   */
+  int connect(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
+
+  /**
+   * \brief Bind on a local address.
+   * \param protocol transport protocol used
+   * \param address local address
+   * \param port local port
+   * \param sockaddr if function succeed integer, sockaddr 
+   * representation of address/port
+   * \param addrlen if function succeed, length of sockaddr
+   * \return positive integer if success, -1 otherwise
+   */
+  int bind(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen);
+
 } /* namespace networking */
+
+#endif /* NETWORKING_H */
 

@@ -6,6 +6,7 @@
                       - Add unit tests (with CppUnit);
                       - Add scons help documentation (scons -h);
                       - Add JsonRpc-Cpp version in jsonrpc.h;
+                      - Support for MS Windows (MinGW only);
                       - Add JsonCpp installation howto.
 
 2009-03-10  Sebastien Vincent <sebastien.vincent@cppextrem.com>

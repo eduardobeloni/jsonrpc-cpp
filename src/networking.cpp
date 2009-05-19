@@ -22,10 +22,10 @@
  * \author Sebastien Vincent
  */
 
-#ifdef _WIN32
-#include <windows.h>
-#include <winsock2.h>
-#endif
+#include <cstdio>
+#include <cstring>
+
+#include "networking.h"
 
 namespace networking
 {
@@ -57,5 +57,144 @@ namespace networking
     WSACleanup();
 #endif
   }
+
+  int connect(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen)
+  {
+    struct addrinfo hints;
+    struct addrinfo* res = NULL;
+    struct addrinfo* p = NULL;
+    char service[8];
+    int sock = -1;
+
+    if(!port || address == "")
+    {
+      return -1;
+    }
+
+    snprintf(service, sizeof(service), "%u", port);
+    service[sizeof(service)-1] = 0x00;
+
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = protocol == UDP ? SOCK_DGRAM : SOCK_STREAM;
+    hints.ai_protocol = protocol;
+    hints.ai_flags = 0;
+
+    if(getaddrinfo(address.c_str(), service, &hints, &res) != 0)
+    {
+      return -1;
+    }
+
+    for(p = res ; p ; p = p->ai_next)
+    {
+      sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+
+      if(sock == -1)
+      {
+        continue;
+      }
+
+      if(protocol == TCP && ::connect(sock, (struct sockaddr*)p->ai_addr, p->ai_addrlen) == -1)
+      {
+        ::close(sock);
+        sock = -1;
+        continue;
+      }
+
+      if(sockaddr)
+      {
+        memcpy(sockaddr, p->ai_addr, p->ai_addrlen);
+      }
+
+      if(addrlen)
+      {
+        *addrlen = p->ai_addrlen;
+      }
+
+      /* ok so now we have a socket bound, break the loop */
+      break;
+    }
+
+    freeaddrinfo(res);
+    p = NULL;
+
+    return sock;
+  }
+
+  int bind(enum TransportProtocol protocol, const std::string& address, uint16_t port, struct sockaddr_storage* sockaddr, socklen_t* addrlen)
+  {
+    struct addrinfo hints;
+    struct addrinfo* res = NULL;
+    struct addrinfo* p = NULL;
+    char service[8];
+    int sock = -1;
+
+    if(!port || address == "")
+    {
+      return -1;
+    }
+
+    snprintf(service, sizeof(service), "%u", port);
+    service[sizeof(service)-1] = 0x00;
+
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = protocol == UDP ? SOCK_DGRAM : SOCK_STREAM;
+    hints.ai_protocol = protocol;
+    hints.ai_flags = AI_PASSIVE;
+
+    if(getaddrinfo(address.c_str(), service, &hints, &res) != 0)
+    {
+      return -1;
+    }
+
+    for(p = res ; p ; p = p->ai_next)
+    {
+      int on = 1;
+
+      sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+
+      if(sock == -1)
+      {
+        continue;
+      }
+
+#ifndef _WIN32
+      setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int));
+
+      /* accept IPv6 OR IPv4 on the same socket */
+      on = 1;
+      setsockopt(sock, IPPROTO_IPV6, IPV6_V6ONLY, &on, sizeof(on));
+#else
+      on = 0;
+#endif
+
+      if(::bind(sock, p->ai_addr, p->ai_addrlen) == -1)
+      {
+        ::close(sock);
+        sock = -1;
+        continue;
+      }
+
+      if(sockaddr)
+      {
+        memcpy(sockaddr, p->ai_addr, p->ai_addrlen);
+      }
+        
+      if(addrlen)
+      {
+        *addrlen = p->ai_addrlen;
+      }
+
+      /* ok so now we have a socket bound, break the loop */
+      break;
+    }
+
+    freeaddrinfo(res);
+    p = NULL;
+
+    return sock;
+  }
+
 } /* namespace networking */
 

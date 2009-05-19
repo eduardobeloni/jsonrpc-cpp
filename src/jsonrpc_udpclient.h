@@ -54,14 +54,6 @@ namespace Json
         virtual ~UdpClient();
 
         /**
-         * \brief Connect to the remote machine
-         * \return true if success, false otherwise
-         * \note on connectionless protocol like UDP, this function
-         * always returns true even if remote peer is not reachable.
-         */
-        virtual bool Connect(); 
-
-        /**
          * \brief Receive data from the network.
          * \param data if data is received it will put in this reference
          * \return number of bytes received or -1 if error
@@ -75,17 +67,6 @@ namespace Json
          * \return number of bytes sent or -1 if error
          */
         ssize_t Send(const std::string& data);
-
-      private:
-        /**
-         * \brief Remote socket address.
-         */
-        struct sockaddr_storage m_sockaddr;
-        
-        /**
-         * \brief Remote socket address length.
-         */
-        socklen_t m_sockaddrlen;
     };
 
   } /* namespace Rpc */

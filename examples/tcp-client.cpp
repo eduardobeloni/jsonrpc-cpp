@@ -45,7 +45,7 @@ int main(int argc, char** argv)
   argc = argc;
   argv = argv;
 
-  if(networking::init())
+  if(!networking::init())
   {
     std::cerr << "Networking initialization failed" << std::endl;
     exit(EXIT_FAILURE);

@@ -37,74 +37,11 @@ namespace Json
 
     TcpClient::TcpClient(const std::string& address, uint16_t port) : Client(address, port)
     {
-      m_protocol = TCP;
+      m_protocol = networking::TCP;
     }
 
     TcpClient::~TcpClient()
     {
-    }
-
-    bool TcpClient::Connect()
-    {
-      struct addrinfo hints;
-      struct addrinfo* res = NULL;
-      struct addrinfo* p = NULL;
-      char service[8];
-
-      if(m_sock > 0)
-      {
-        return false;
-      }
-
-      if(!GetPort() || GetAddress() == "")
-      {
-        m_sock = -1;
-        return false;
-      }
-
-      snprintf(service, sizeof(service), "%u", GetPort());
-      service[sizeof(service)-1] = 0x00;
-
-      memset(&hints, 0, sizeof(struct addrinfo));
-      hints.ai_family = AF_UNSPEC;
-      hints.ai_socktype = m_protocol == UDP ? SOCK_DGRAM : SOCK_STREAM;
-      hints.ai_protocol = m_protocol;
-      hints.ai_flags = 0;
-
-      if(getaddrinfo(GetAddress().c_str(), service, &hints, &res) != 0)
-      {
-        return false;
-      }
-
-      for(p = res ; p ; p = p->ai_next)
-      {
-        m_sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-
-        if(m_sock == -1)
-        {
-          continue;
-        }
-
-        if(connect(m_sock, p->ai_addr, p->ai_addrlen) == -1)
-        {
-          ::close(m_sock);
-          m_sock = -1;
-          continue;
-        }
-
-        /* ok so now we have a socket bound, break the loop */
-        break;
-      }
-
-      freeaddrinfo(res);
-      p = NULL;
-
-      if(m_sock > 0)
-      {
-        return true;
-      }
-
-      return false;
     }
 
     ssize_t TcpClient::Send(const std::string& data)

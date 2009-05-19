@@ -25,8 +25,10 @@
 #ifndef JSONRPC_SERVER_H
 #define JSONRPC_SERVER_H
 
-#include "jsonrpc_handler.h"
 #include "jsonrpc_common.h"
+#include "jsonrpc_handler.h"
+
+#include "networking.h"
 
 namespace Json
 {
@@ -133,7 +135,7 @@ namespace Json
         /**
          * \brief Transport protocol of the socket.
          */
-        enum TransportProtocol m_protocol;
+        enum networking::TransportProtocol m_protocol;
 
         /**
          * \brief JSON-RPC handler.

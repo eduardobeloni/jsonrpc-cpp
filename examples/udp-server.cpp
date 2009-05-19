@@ -68,7 +68,7 @@ int main(int argc, char** argv)
   argc = argc;
   argv = argv;
 
-  if(networking::init())
+  if(!networking::init())
   {
     std::cerr << "Networking initialization failed" << std::endl;
     exit(EXIT_FAILURE);
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 
   g_run = true;
 
-  std::cout << "Start JSON-RPC TCP server" << std::endl;
+  std::cout << "Start JSON-RPC UDP server" << std::endl;
 
   while(g_run)
   {

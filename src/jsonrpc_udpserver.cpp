@@ -36,7 +36,7 @@ namespace Json
 
     UdpServer::UdpServer(const std::string& address, uint16_t port) : Server(address, port)
     {
-      m_protocol = UDP;
+      m_protocol = networking::UDP;
     }
 
     UdpServer::~UdpServer()
