@@ -57,12 +57,13 @@ namespace Json
         virtual ~TcpServer();
 
         /**
-         * \brief Receive data from the network.
+         * \brief Receive data from the network and process it.
          * \param fd socket descriptor to receive data
-         * \return number of bytes received or -1 if error
+         * \return true if message has been correctly received, processed and
+         * response sent, false otherwise (mainly send/recv error)
          * \note This method will blocked until data comes.
          */
-        virtual ssize_t Recv(int fd);
+        virtual bool Recv(int fd);
 
         /**
          * \brief Wait message.
@@ -93,7 +94,7 @@ namespace Json
          * \brief Get the list of clients.
          * \return list of clients
          */
-        std::list<int> GetClients() const;
+        const std::list<int> GetClients() const;
 
       private:
         /**

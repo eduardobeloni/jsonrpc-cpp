@@ -100,12 +100,13 @@ namespace Json
         bool Bind();
 
         /**
-         * \brief Receive data from the network.
+         * \brief Receive data from the network and process it.
          * \param fd file descriptor on which receive
-         * \return number of bytes received or -1 if error
+         * \return true if message has been correctly received, processed and
+         * response sent, false otherwise (mainly send/receive error)
          * \note This method will blocked until data comes.
          */
-        virtual ssize_t Recv(int fd) = 0;
+        virtual bool Recv(int fd) = 0;
         
         /**
          * \brief Close socket.

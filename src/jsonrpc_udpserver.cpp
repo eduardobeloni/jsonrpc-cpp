@@ -43,7 +43,7 @@ namespace Json
     {
     }
 
-    ssize_t UdpServer::Recv(int fd)
+    bool UdpServer::Recv(int fd)
     {
       Json::Value response;
       ssize_t nb = -1;
@@ -67,7 +67,7 @@ namespace Json
           {
             /* error parsing NetString */
             std::cerr << e.what() << std::endl;
-            return -1;
+            return false;
           }
         }
 
@@ -88,11 +88,15 @@ namespace Json
           if(::sendto(fd, rep.c_str(), rep.length(), 0, (struct sockaddr*)&addr, addrlen) == -1)
           {
             /* error */
+            std::cerr << "Error while sending"  << std::endl;
+            return false;
           }
         }
+
+        return true;
       }
 
-      return nb;
+      return false;
     }
 
     void UdpServer::WaitMessage(uint32_t ms)

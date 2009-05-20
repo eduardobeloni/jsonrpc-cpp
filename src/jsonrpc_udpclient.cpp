@@ -64,6 +64,7 @@ namespace Json
 
       if((nb = ::recvfrom(m_sock, buf, sizeof(buf), 0, NULL, NULL)) == -1)
       {
+        std::cerr << "Error while receiving" << std::endl;
         return -1;
       }
 

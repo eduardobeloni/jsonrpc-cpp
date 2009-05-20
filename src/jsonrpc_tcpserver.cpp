@@ -47,7 +47,7 @@ namespace Json
       }
     }
 
-    ssize_t TcpServer::Recv(int fd)
+    bool TcpServer::Recv(int fd)
     {
       Json::Value response;
       ssize_t nb = -1;
@@ -70,7 +70,7 @@ namespace Json
           {
             /* error parsing Netstring */
             std::cerr << e.what() << std::endl;
-            return -1;
+            return false;
           }
         }
 
@@ -90,14 +90,18 @@ namespace Json
           if(send(fd, rep.c_str(), rep.length(), 0) == -1)
           {
             /* error */
+            std::cerr << "Error while sending data" << std::endl;
+            return false;
           }
         }
+
+        return true;
       }
       else
       {
         m_purge.push_back(fd);
+        return false;
       }
-      return nb;
     }
 
     void TcpServer::WaitMessage(uint32_t ms)
@@ -202,7 +206,7 @@ namespace Json
       /* listen socket should be closed in Server destructor */
     }
 
-    std::list<int> TcpServer::GetClients() const
+    const std::list<int> TcpServer::GetClients() const
     {
       return m_clients;
     }
