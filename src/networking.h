@@ -34,6 +34,23 @@
 #include <windows.h>
 #include <winsock2.h>
 
+/* to use getaddrinfo, _WIN32_WINNT have to
+ * equal at least 0x0501
+ */
+#define OLD_WIN32_WINNT _WIN32_WINNT
+
+#if (_WIN32_WINNT < 0x0501)
+#undef _WIN32_WINNT
+#define _WIN32_WINNT 0x501
+#endif
+
+#include <ws2tcpip.h>
+
+#if (_WIN32_WINNT != OLD_WIN32_WINNT)
+#undef _WIN32_WINNT
+#define _WIN32_WINNT OLD_WIN32_WINNT
+#endif
+
 typedef int socklen_t;
 #define close closesocket
 

@@ -25,11 +25,8 @@ else:
 platform = "default"; 
 if sys.platform == 'win32':
   platform = "mingw";
-  # Define _WIN32_WINNT to have getaddrinfo
-  cflags.append('-D_WIN32_WINNT=0x0501');
   # Remove flags that cause compilation errors
-  cflags.remove('-std=c++98');
-  cflags.remove('-Werror');
+  cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
 
 # Create an environment
 env = Environment(tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);

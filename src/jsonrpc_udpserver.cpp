@@ -108,7 +108,13 @@ namespace Json
       max_sock++;
 
       FD_ZERO(&fdsr);
+
+#ifdef _WIN32
+      /* on Windows, a socket is not an int but a SOCKET (unsigned int) */
+      FD_SET((SOCKET)m_sock, &fdsr);
+#else
       FD_SET(m_sock, &fdsr);
+#endif
 
       tv.tv_sec = ms / 1000;
       tv.tv_usec = (ms % 1000) * 1000;

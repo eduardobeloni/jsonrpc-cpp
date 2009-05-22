@@ -114,11 +114,21 @@ namespace Json
       tv.tv_usec = (ms % 1000 ) / 1000;
 
       FD_ZERO(&fdsr);
+
+#ifdef _WIN32
+      /* on Windows, a socket is not an int but a SOCKET (unsigned int) */
+      FD_SET((SOCKET)m_sock, &fdsr);
+#else
       FD_SET(m_sock, &fdsr);
+#endif
 
       for(std::list<int>::iterator it = m_clients.begin() ; it != m_clients.end() ; it++)
       {
+#ifdef _WIN32
+        FD_SET((SOCKET)(*it), &fdsr);
+#else
         FD_SET((*it), &fdsr);
+#endif
 
         if((*it) > max_sock)
         {
