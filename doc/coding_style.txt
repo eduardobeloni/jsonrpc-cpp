@@ -2,13 +2,16 @@ JsonRpc-Cpp coding style
 =========================
 
 I) Code layout
+--------------
 
-The software uses the ANSI coding standard layout. Use 2 space indentation instead 
+The code has to follow ANSI coding standard layout. Use 2 space indentation instead 
 of tabs.
 
 void foo(int barc, char** barv)
 {
   int test = 0;
+  bool run = true;
+  size_t i = 0;
 
   if(test)
   {
@@ -32,7 +35,7 @@ void foo(int barc, char** barv)
   do
   {
     /* do another loop */
-  } while(run);
+  }while(run);
 }
 
 The C++ comments ('//') can be used as well as the C comments ('/* */').
@@ -47,16 +50,25 @@ The C++ comments ('//') can be used as well as the C comments ('/* */').
  */
 
 II) Code organization
+---------------------
 
-The code has to follow these recommandations:
+The code has to follow these recommendations:
 - Always initialize your variables;
-- Put "static" keyword when functions / global variables is not used outside the file;
+- Put "static" keyword if functions / global variables are not used outside a C++ file (not in header file);
 - Try to avoid static variables in functions (try to make reentrant things);
-- All member variables of a class must be prefixed with "m_";
-- Each global variable must be prefixed with "g_";
+- Prefer using size_t/ssize_t instead of int/unsigned int when possible;
+- Use "const" keyword for pointers and references if they should not been modified in function/method;
+- Use "const" keyword for methods if they do not modified class variables;
 - Put an empty line at the end of each file.
 
-Each file, function, structure, classe and global variable MUST be documented using doxygen. Here is a
+Naming has to follow these recommendations:
+- File name has to be in lowercase, words are separated by  "_" (core files) or "-" (test and application-level files);
+- Class and method name respects the CamelCase convention (MyClass::MyMethod);
+- All class member variables name must be prefixed with "m_";
+- Function name should be in lowercase, words are separeted by a "_" character (my_function);
+- Each global variable must be prefixed with "g_".
+
+Each file, function, structure, class and global variable MUST be documented using doxygen. Here is a
 complete example:
 
 /**
@@ -75,9 +87,15 @@ complete example:
  */
 struct my_struct
 {
-  int a; /**< description of a */
-  char b; /**< description of b */
+  int a; /**< Description of a */
+  char b; /**< Description of b */
 };
+
+/**
+ * \var g_my_var
+ * \brief Description of this global variable.
+ */
+struct my_struct* g_my_var = NULL;
 
 /**
  * \class MyClass
@@ -97,27 +115,21 @@ class MyClass
     ~MyClass();
 
     /**
-     * \brief A function
+     * \brief If count reach maximum.
      * \param count parameter description
-     * \return true if success, false otherwise
+     * \return true if count reach maximum, false otherwise
      */
-    bool AFunction(unsigned int count);
+    bool IsMax(size_t count);
 
   private:
     /**
      * \brief Member description.
      */
-    unsigned int m_count;
+    size_t m_count;
 };
 
 /**
- * \var g_my_var
- * \brief Description of this global variable.
- */
-struct my_struct* g_my_var = NULL;
-
-/**
- * \brief Doing something
+ * \brief Doing something.
  * \param a number to use
  * \param b char to use
  * \return 0 if success, -1 otherwise
