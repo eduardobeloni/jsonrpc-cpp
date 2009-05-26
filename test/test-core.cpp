@@ -50,6 +50,19 @@ namespace Json
           response["result"] = "success";
           return true;
         }
+
+        /**
+         * \brief Notification.
+         * \param root JSON-RPC request
+         * \param response JSON-RPC response
+         * \return true if correctly processed, false otherwise
+         */
+        bool Notify(const Json::Value& root, Json::Value& response)
+        {
+          std::string version = root["jsonrpc"].asString();
+          response = Json::Value::null;
+          return true;
+        }
     };
 
     /**
@@ -89,17 +102,17 @@ namespace Json
          */
         void testMethod()
         {
-          const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"system.print\"}";
+          const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"print\"}";
           const std::string str2 = "{\"jsonrpc\":\"2.0\", \"method\":\"method_does_not_exist\"}";
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("system.print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
 
           CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
           CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
 
-          m_handler->DeleteMethod(std::string("system.print"));
+          m_handler->DeleteMethod(std::string("print"));
           CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
         }
 
@@ -108,13 +121,20 @@ namespace Json
          */
         void testBatchedCall()
         {
-          const std::string str = "[{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"system.print\"}, {\"id\":2, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}]";
+          const std::string str = "[{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"print\"}, {\"id\":2, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}]";
+          const std::string str2 = "[{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"print\"}, {\"jsonrpc\":\"2.0\", \"method\":\"notify\"}]";
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("system.print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Notify, std::string("notify")));
+
           CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
           CPPUNIT_ASSERT(response.size() == 2);
+
+          response.clear();
+          CPPUNIT_ASSERT(m_handler->Process(str2, response) == true);
+          CPPUNIT_ASSERT(response.size() == 1);
         }
 
         /**
@@ -127,7 +147,7 @@ namespace Json
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("system.print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
           CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
           /* single error response when batched call itself failed */
           CPPUNIT_ASSERT(response.isArray() == false);

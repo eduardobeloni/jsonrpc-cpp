@@ -41,7 +41,15 @@ class TestRpc
      * \return true if correctly processed, false otherwise
      */
     bool Print(const Json::Value& root, Json::Value& response);
-
+    
+    /**
+     * \brief Notification.
+     * \param root JSON-RPC request
+     * \param response JSON-RPC response
+     * \return true if correctly processed, false otherwise
+     */
+    bool Notify(const Json::Value& root, Json::Value& response);
+    
     /**
      * \brief Get the description in JSON format.
      * \return JSON description

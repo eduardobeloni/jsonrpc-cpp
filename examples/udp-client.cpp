@@ -66,11 +66,10 @@ int main(int argc, char** argv)
   /* build JSON-RPC query */
   query1["jsonrpc"] = "2.0";
   query1["id"] = 1;
-  query1["method"] = "system.print";
+  query1["method"] = "print";
 
-  query2["jsonrpc"] = "2.1";
-  query2["id"] = 2;
-  query2["method"] = "system.prin";
+  query2["jsonrpc"] = "2.0";
+  query2["method"] = "notify";
 
   query3["foo"] = "bar";
 

@@ -113,6 +113,7 @@ namespace Json
          * \param msg JSON-RPC request or notification
          * \param response response produced (may be Json::Value::null)
          * \return true if message has been correctly processed, false otherwise
+         * \note JSON-RPC's notification method MUST set response to Json::Value::null
          */
         virtual bool Call(const Json::Value& msg, Json::Value& response)
         {

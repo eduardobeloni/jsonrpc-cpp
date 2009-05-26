@@ -84,7 +84,8 @@ int main(int argc, char** argv)
     std::cout << "Error signal SIGINT will not be handled" << std::endl;
   }
 
-  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Print, std::string("system.print"), a.GetDescription()));
+  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Print, std::string("print"), a.GetDescription()));
+  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Notify, std::string("notify"), a.GetDescription()));
 
   /* server.SetEncapsulatedFormat(Json::Rpc::NETSTRING); */
 

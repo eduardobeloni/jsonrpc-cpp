@@ -200,10 +200,19 @@ namespace Json
       {
         /* batched call */
         size_t i = 0;
+        size_t j = 0;
         
         for(i = 0 ; i < root.size() ; i++)
         {
-          Process(root[i], response[i]);
+          Json::Value ret;
+          Process(root[i], ret);
+          
+          if(ret != Json::Value::null)
+          {
+            /* it is not a notification, add to array of responses */
+            response[j] = ret;
+            j++;
+          }
         }
         return true;
       }

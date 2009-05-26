@@ -33,6 +33,13 @@ bool TestRpc::Print(const Json::Value& root, Json::Value& response)
   return true;
 }
 
+bool TestRpc::Notify(const Json::Value& root, Json::Value& response)
+{
+  std::cout << "Notification: " << root << std::endl;
+  response = Json::Value::null;
+  return true;
+}
+
 Json::Value TestRpc::GetDescription()
 {
   Json::FastWriter writer;
@@ -40,7 +47,7 @@ Json::Value TestRpc::GetDescription()
   Json::Value parameters;
   Json::Value param1;
 
-  root["description"] = "Print Plop";
+  root["description"] = "Print";
 
   /* type of parameter named arg1 */
   param1["type"] = "integer";
