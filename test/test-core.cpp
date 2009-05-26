@@ -60,6 +60,8 @@ namespace Json
     {
       CPPUNIT_TEST_SUITE(Json::Rpc::TestCore);
       CPPUNIT_TEST(testMethod);
+      CPPUNIT_TEST(testBatchedCall);
+      CPPUNIT_TEST(testBatchedCallParsing);
       CPPUNIT_TEST(testJsonRpcVersion);
       CPPUNIT_TEST(testJsonRpcParsing);
       CPPUNIT_TEST_SUITE_END();
@@ -98,6 +100,37 @@ namespace Json
 
           m_handler->DeleteMethod(std::string("system.print"));
           CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
+        }
+
+        /**
+         * \brief Test batched call.
+         */
+        void testBatchedCall()
+        {
+          const std::string str = "[{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"system.print\"}, {\"id\":2, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}]";
+          TestRpc obj;
+          Json::Value response;
+
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("system.print")));
+          CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
+          CPPUNIT_ASSERT(response.size() == 2);
+        }
+
+
+        /**
+         * \brief Test batched call parsing.
+         */
+        void testBatchedCallParsing()
+        {
+          /* invalid JSON array */
+          const std::string str = "[{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"system }, {\"id\":2, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}]";
+          TestRpc obj;
+          Json::Value response;
+
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("system.print")));
+          CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
+          /* single error response when batched call itself failed */
+          CPPUNIT_ASSERT(response.isArray() == false);
         }
 
         /**

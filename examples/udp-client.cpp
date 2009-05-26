@@ -39,6 +39,10 @@ int main(int argc, char** argv)
 {
   Json::Rpc::UdpClient udpClient(std::string("127.0.0.1"), 8086);
   Json::Value query;
+  Json::Value query1;
+  Json::Value query2;
+  Json::Value query3;
+  Json::Value query4;
   Json::FastWriter writer;
   std::string queryStr;
   std::string responseStr;
@@ -60,9 +64,24 @@ int main(int argc, char** argv)
   }
 
   /* build JSON-RPC query */
-  query["jsonrpc"] = "2.0";
-  query["id"] = 1;
-  query["method"] = "system.print";
+  query1["jsonrpc"] = "2.0";
+  query1["id"] = 1;
+  query1["method"] = "system.print";
+
+  query2["jsonrpc"] = "2.0";
+  query2["id"] = 2;
+  query2["method"] = "system.prin";
+
+  query3["foo"] = "bar";
+
+  query4["jsonrpc"] = "2.0";
+  query4["id"] = 4;
+  query4["method"] = "method";
+
+  query[(unsigned int)0] = query1;
+  query[(unsigned int)1] = query2;
+  query[(unsigned int)2] = query3;
+  query[(unsigned int)3] = query4;
 
   queryStr = writer.write(query);
   std::cout << "Query is: " << queryStr << std::endl;

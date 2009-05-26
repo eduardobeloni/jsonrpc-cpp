@@ -100,62 +100,52 @@ namespace Json
       return m_writer.write(value);
     }
 
-    bool Handler::Check(const std::string& msg, Json::Value& root)
+    bool Handler::Check(const Json::Value& root, Json::Value& error)
     {
-      bool parsing = m_reader.parse(msg, root);
-
-      /* if one thing goes wrong, we forge an error attribute that
-       * will be added to a JSON-RPC error message 
-       */
-      if(!parsing)
-      {
-        root = Json::Value();
-        root["code"] = PARSING_ERROR;
-        root["message"] = "Parse error";
-        
-        return false;
-      }
-
+      Json::Value err;
+      
       /* check the JSON-RPC version => 2.0 */
       if(!root.isObject() || !root.isMember("jsonrpc") || root["jsonrpc"] != "2.0") 
       {
-        root = Json::Value();
-        root["code"] = INVALID_REQUEST;
-        root["message"] = "Invalid JSON-RPC";
+        error = Json::Value();
+        error["id"] = Json::Value::null;
+        error["jsonrpc"] = "2.0";
         
-        return false;
-      }
-
-      return true;
-    }
-
-    bool Handler::Process(const std::string& msg, Json::Value& response)
-    {
-      Json::Value root;
-      std::string method;
-
-      if(!Check(msg, root))
-      {
-        response["jsonrpc"] = "2.0";
-        response["error"] = root;
-        response["id"] = Json::Value::null;
+        err["code"] = INVALID_REQUEST;
+        err["message"] = "Invalid JSON-RPC request.";
+        error["error"] = err;
         return false;
       }
 
       /* extract "method" attribute */
       if(!root.isMember("method") || !root["method"].isString())
       {
-        response["id"] = Json::Value::null;
-        response["jsonrpc"] = "2.0";
+        error = Json::Value();
+        error["id"] = Json::Value::null;
+        error["jsonrpc"] = "2.0";
 
-        Json::Value error;
-        error["code"] = INVALID_REQUEST;
-        error["message"] = "Invalid JSON-RPC";
-        response["error"] = error;
+        err["code"] = INVALID_REQUEST;
+        err["message"] = "Invalid JSON-RPC request.";
+        error["error"] = err;
+        return false;
+      }
+
+      return true;
+    }
+
+    bool Handler::Process(const Json::Value& root, Json::Value& response)
+    {
+      Json::Value error;
+      std::string method;
+
+      if(!Check(root, error))
+      {
+        response = error;
         return false;
       }
 
       method = root["method"].asString();
+      
       if(method != "")
       {
         CallbackMethod* rpc = Lookup(method);
@@ -169,12 +159,49 @@ namespace Json
       response["id"] = root.isMember("id") ? root["id"] : Json::Value::null;
       response["jsonrpc"] = "2.0";
 
-      Json::Value error;
       error["code"] = METHOD_NOT_FOUND;
-      error["message"] = "Procedure not found";
+      error["message"] = "Method not found.";
       response["error"] = error;
 
       return false;
+    }
+
+    bool Handler::Process(const std::string& msg, Json::Value& response)
+    {
+      Json::Value root;
+      Json::Value error;
+      bool parsing = false;
+
+      /* parsing */
+      parsing = m_reader.parse(msg, root);
+      
+      if(!parsing)
+      {
+        /* request or batched call is not in JSON format */
+        response["id"] = Json::Value::null;
+        response["jsonrpc"] = "2.0";
+        
+        error["code"] = PARSING_ERROR;
+        error["message"] = "Parse error.";
+        response["error"] = error; 
+        return false;
+      }
+      
+      if(root.isArray())
+      {
+        /* batched call */
+        size_t i = 0;
+        
+        for(i = 0 ; i < root.size() ; i++)
+        {
+          Process(root[i], response[i]);
+        }
+        return true;
+      }
+      else
+      {
+        return Process(root, response);
+      }
     }
 
     bool Handler::Process(const char* msg, Json::Value& response)

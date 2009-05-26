@@ -45,7 +45,7 @@ namespace netstring
        * \brief Constructor.
        * \param msg error message
        */
-      NetstringException(const std::string& msg="") throw();
+      NetstringException(const std::string& msg = "") throw();
 
       /**
        * \brief Destructor.
@@ -76,6 +76,7 @@ namespace netstring
    * \brief Decode a netstring into string.
    * \param netstr netstring
    * \return decoded string
+   * \throw NetstringException if netstr is not a valid netstring
    */
   std::string decode(const std::string& netstr) throw(netstring::NetstringException);
 

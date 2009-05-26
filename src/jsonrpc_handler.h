@@ -122,7 +122,6 @@ namespace Json
         /**
          * \brief Get the name of the methods (optional).
          * \return name of the method as std::string
-         * \note Have to be implemented by subclasses
          */
         virtual std::string GetName() const
         {
@@ -163,7 +162,7 @@ namespace Json
     /**
      * \class Handler
      * \brief Container of methods which can be called remotly.
-     * \note Always pass in fucntion with reference (i.e. void foo(Json::Rpc::Handler& handler)).
+     * \note Always pass it in function with reference (i.e. void foo(Json::Rpc::Handler& handler)).
      */
     class Handler
     {
@@ -197,8 +196,8 @@ namespace Json
          * \brief Process a JSON-RPC message.
          * \param msg JSON-RPC message as std::string
          * \param response JSON-RPC response (could be Json::Value::null)
-         * \return true if the request has been correctly processed, false otherwise (may be
-         * caused by parsed error, ...)
+         * \return true if the request has been correctly processed, false otherwise
+         * (may be caused by parsed error, ...)
          * \note in case msg is a notification, response is equal to Json::Value::null 
          * and the return value is true.
          */
@@ -254,12 +253,23 @@ namespace Json
         CallbackMethod* Lookup(const std::string& name) const;
 
         /**
-         * \brief Check if the message is a valid JSON one.
-         * \param msg the message to check
-         * \param root message parsed if method returns true, the error attribute otherwise
+         * \brief Check if the message is a valid JSON object one.
+         * \param root message to check validity
+         * \param error complete JSON-RPC error message if method failed
          * \return true if the message is a JSON one, false otherwise
          */
-        bool Check(const std::string& msg, Json::Value& root);
+        bool Check(const Json::Value& root, Json::Value& error);
+
+        /**
+         * \brief Process a JSON-RPC object message.
+         * \param root JSON-RPC message as Json::Value
+         * \param response JSON-RPC response that will be filled in this method
+         * \return true if the request has been correctly processed, false otherwise 
+         * (may be caused by parsed error, ...)
+         * \note In case msg is a notification, response is equal to Json::Value::null 
+         * and the return value is true.
+         */
+        bool Process(const Json::Value& root, Json::Value& response);
     };
 
   } /* namespace Rpc */
