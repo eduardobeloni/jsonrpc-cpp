@@ -68,7 +68,7 @@ int main(int argc, char** argv)
   query1["id"] = 1;
   query1["method"] = "system.print";
 
-  query2["jsonrpc"] = "2.0";
+  query2["jsonrpc"] = "2.1";
   query2["id"] = 2;
   query2["method"] = "system.prin";
 

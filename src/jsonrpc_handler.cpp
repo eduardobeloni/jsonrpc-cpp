@@ -107,7 +107,6 @@ namespace Json
       /* check the JSON-RPC version => 2.0 */
       if(!root.isObject() || !root.isMember("jsonrpc") || root["jsonrpc"] != "2.0") 
       {
-        error = Json::Value();
         error["id"] = Json::Value::null;
         error["jsonrpc"] = "2.0";
         
@@ -117,10 +116,20 @@ namespace Json
         return false;
       }
 
+      if(root.isMember("id") && (root["id"].isArray() || root["id"].isObject()))
+      {
+        error["id"] = Json::Value::null;
+        error["jsonrpc"] = "2.0";
+
+        err["code"] = INVALID_REQUEST;
+        err["message"] = "Invalid JSON-RPC request.";
+        error["error"] = err;
+        return false;
+      }
+
       /* extract "method" attribute */
       if(!root.isMember("method") || !root["method"].isString())
       {
-        error = Json::Value();
         error["id"] = Json::Value::null;
         error["jsonrpc"] = "2.0";
 

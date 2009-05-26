@@ -62,8 +62,9 @@ namespace Json
       CPPUNIT_TEST(testMethod);
       CPPUNIT_TEST(testBatchedCall);
       CPPUNIT_TEST(testBatchedCallParsing);
-      CPPUNIT_TEST(testJsonRpcVersion);
       CPPUNIT_TEST(testJsonRpcParsing);
+      CPPUNIT_TEST(testJsonRpcId);
+      CPPUNIT_TEST(testJsonRpcVersion);
       CPPUNIT_TEST_SUITE_END();
        
       public:
@@ -116,7 +117,6 @@ namespace Json
           CPPUNIT_ASSERT(response.size() == 2);
         }
 
-
         /**
          * \brief Test batched call parsing.
          */
@@ -131,19 +131,6 @@ namespace Json
           CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
           /* single error response when batched call itself failed */
           CPPUNIT_ASSERT(response.isArray() == false);
-        }
-
-        /**
-         * \brief Test if handler reject query with wrong "jsonrpc" attribute.
-         */
-        void testJsonRpcVersion()
-        {
-          const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
-          const std::string str2 = "{\"jsonrpc\":\"1.0\", \"method\":\"system.describe\"}";
-          Json::Value response;
-
-          CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
-          CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
         }
 
         /**
@@ -174,6 +161,36 @@ namespace Json
           CPPUNIT_ASSERT(m_handler->Process(str5, response) == false);
           CPPUNIT_ASSERT(m_handler->Process(str6, response) == true);
           CPPUNIT_ASSERT(m_handler->Process(str7, response) == true);
+        }
+
+        /**
+         * \brief Test if handler reject query with wrong "jsonrpc" attribute.
+         */
+        void testJsonRpcVersion()
+        {
+          const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
+          const std::string str2 = "{\"jsonrpc\":\"1.0\", \"method\":\"system.describe\"}";
+          Json::Value response;
+
+          CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
+          CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
+        }
+
+        /**
+         * \brief Test if handler reject request with array or object "id" attribute.
+         */
+        void testJsonRpcId()
+        {
+          const std::string str = "{\"id\":1, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
+          const std::string str2 = "{\"id\":\"2\", \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
+          const std::string str3 = "{\"id\":{\"n\":3}, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
+          const std::string str4 = "{\"id\":{\"n\":\"4\"}, \"jsonrpc\":\"2.0\", \"method\":\"system.describe\"}";
+          Json::Value response;
+
+          CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
+          CPPUNIT_ASSERT(m_handler->Process(str2, response) == true);
+          CPPUNIT_ASSERT(m_handler->Process(str3, response) == false);
+          CPPUNIT_ASSERT(m_handler->Process(str4, response) == false);
         }
 
       private:
