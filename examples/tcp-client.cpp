@@ -60,7 +60,7 @@ int main(int argc, char** argv)
   /* build JSON-RPC query */
   query["jsonrpc"] = "2.0";
   query["id"] = 1;
-  query["method"] = "system.print";
+  query["method"] = "print";
 
   queryStr = writer.write(query);
   std::cout << "Query is: " << queryStr << std::endl;
