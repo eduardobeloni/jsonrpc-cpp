@@ -22,9 +22,6 @@
  * \author Sebastien Vincent
  */
 
-#include <cstdio>
-#include <cstring>
-
 #include "jsonrpc_udpclient.h"
 
 #include "netstring.h"

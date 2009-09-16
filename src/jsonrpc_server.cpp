@@ -22,12 +22,6 @@
  * \author Sebastien Vincent
  */
 
-#include <sys/types.h>
-
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
 #include "jsonrpc_server.h"
 
 namespace Json 

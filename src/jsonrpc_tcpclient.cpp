@@ -22,9 +22,6 @@
  * \author Sebastien Vincent
  */
 
-#include <cstdio>
-#include <cstring>
-
 #include "jsonrpc_tcpclient.h"
 
 #include "netstring.h"

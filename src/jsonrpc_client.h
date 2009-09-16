@@ -25,8 +25,6 @@
 #ifndef JSONRPC_CLIENT_H
 #define JSONRPC_CLIENT_H
 
-#include <sys/types.h>
-
 #include "jsonrpc_common.h"
 #include "jsonrpc_handler.h"
 

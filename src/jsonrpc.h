@@ -19,7 +19,7 @@
 /**
  * \file jsonrpc.h
  * \brief Version information and all 
- * related include files for JsonRpc-Cpp.
+ * related include files in order to JsonRpc-Cpp.
  * \author Sebastien Vincent
  */
 
@@ -45,6 +45,7 @@
 /* include from external jsoncpp lib */
 #include <json/json.h>
 
+/* include all headers from JsonRpc-Cpp lib */
 #include "jsonrpc_common.h"
 #include "jsonrpc_handler.h"
 #include "jsonrpc_server.h"
@@ -56,6 +57,22 @@
 
 #include "netstring.h"
 #include "networking.h"
+
+/**
+ * \namespace Json
+ * \brief JSON (JavaScript Object Notation).
+ */
+namespace Json 
+{
+  /**
+   * \namespace Json::Rpc
+   * \brief JSON-RPC (remote procedure call using JSON as encoding format).
+   */
+  namespace Rpc
+  {
+  } /* namespace Rpc */
+
+} /* namespace Json */
 
 #endif /* JSONRPC_H */
 

@@ -34,16 +34,9 @@
 
 #include "jsonrpc_common.h"
 
-/**
- * \namespace Json
- * \brief JSON (JavaScript Object Notation).
- */
 namespace Json 
 {
-  /**
-   * \namespace Json::Rpc
-   * \brief JSON-RPC (remote procedure call using JSON as encoding format).
-   */
+
   namespace Rpc
   {
     /**

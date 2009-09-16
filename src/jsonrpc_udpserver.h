@@ -25,8 +25,6 @@
 #ifndef JSONRPC_UDPSERVER_H
 #define JSONRPC_UDPSERVER_H
 
-#include <sys/types.h>
-
 #include "jsonrpc_common.h"
 #include "jsonrpc_server.h"
 

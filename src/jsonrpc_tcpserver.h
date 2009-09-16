@@ -25,8 +25,6 @@
 #ifndef JSONRPC_TCPSERVER_H
 #define JSONRPC_TCPSERVER_H
 
-#include <sys/types.h>
-
 #include <list>
 
 #include "jsonrpc_common.h"
