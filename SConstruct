@@ -87,7 +87,7 @@ unittest_sources = ['test/test-runner.cpp',
 unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=[libs, 'cppunit']);
 
 # Run unit tests
-runtest = env.Command('runtest', None, "test/test-runner $SOURCE $TARGET");
+runtest = env.Command('runtest', None, "test/test-runner");
 
 # Install script
 env.Install(dir = install_dir + "/lib/", source = libjsonrpc);
