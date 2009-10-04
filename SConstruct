@@ -42,6 +42,7 @@ lib_sources = ['src/jsonrpc_handler.cpp',
                'src/jsonrpc_udpclient.cpp',
                'src/jsonrpc_tcpclient.cpp',
                'src/netstring.cpp',
+               'src/system.cpp',
                'src/networking.cpp'];
 
 lib_includes = ['src/jsonrpc.h',
@@ -54,6 +55,7 @@ lib_includes = ['src/jsonrpc.h',
                 'src/jsonrpc_tcpclient.h',
                 'src/jsonrpc_common.h',
                 'src/netstring.h',
+                'src/system.h',
                 'src/networking.h'];
 
 # Build libjsonrpc
@@ -62,6 +64,8 @@ libs = ['json'];
 # Add winsock library for MS Windows
 if sys.platform == 'win32':
   libs.append('ws2_32');
+else:
+  libs.append('pthread');
 
 libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=libs);
 
@@ -71,17 +75,20 @@ udpserver_sources = ['examples/udp-server.cpp'];
 tcpserver_sources = ['examples/tcp-server.cpp'];
 udpclient_sources = ['examples/udp-client.cpp'];
 tcpclient_sources = ['examples/tcp-client.cpp'];
+system_sources = ['examples/system.cpp'];
 
 examples_common = env.Object(examples_sources);
 tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS=libs);
 udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS=libs);
 tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS=libs);
 udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS=libs);
+system_bin = env.Program(target = 'examples/system', source = [system_sources, examples_common], LIBS=libs);
 
 # Build unit tests
 test_common = env.Object(lib_sources);
 unittest_sources = ['test/test-runner.cpp',
                     'test/test-core.cpp',
+                    'test/test-system.cpp',
                     'test/test-netstring.cpp']
 
 unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=[libs, 'cppunit']);
@@ -101,7 +108,7 @@ env.Alias('doxygen', doxygen);
 
 # Alias for targets
 env.Alias('build', [libjsonrpc]);
-env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient]);
+env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient, system_bin]);
 env.Alias('install', [install_dir]);
 env.Alias('build-test', ['build', unittest]);
 env.Alias('test', ['build-test', runtest]);

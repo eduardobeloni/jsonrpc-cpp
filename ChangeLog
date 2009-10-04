@@ -1,3 +1,7 @@
+2009-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+
+  * Version 0.3     : - Thread support.
+
 2009-05-27  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
   * Version 0.2     : - Batched call support;

@@ -41,7 +41,8 @@ namespace Json
   {
     /**
      * \class CallbackMethod
-     * \brief Callback-style method.
+     * \brief Abstract callback-style method.
+     * \see RpcMethod
      */
     class CallbackMethod
     {
@@ -75,7 +76,11 @@ namespace Json
     };
 
     /**
+     * \class RpcMethod
      * \brief Template class that represent the RPC method.
+     * \warning As class keep pointer of object reference, you should take 
+     * care at the lifetime of object you pass in RpcMethod constructor,
+     * else it could lead to crash your program.
      */
     template<class T> class RpcMethod : public CallbackMethod
     {
@@ -88,8 +93,8 @@ namespace Json
 
         /**
          * \brief Constructor.
-         * \param obj Object
-         * \param method the class
+         * \param obj object
+         * \param method class method
          * \param name symbolic name (i.e. system.describe)
          * \param description method description (in JSON format)
          */
@@ -157,6 +162,7 @@ namespace Json
      * \class Handler
      * \brief Container of methods which can be called remotly.
      * \note Always pass it in function with reference (i.e. void foo(Json::Rpc::Handler& handler)).
+     * \see RpcMethod
      */
     class Handler
     {
@@ -169,14 +175,17 @@ namespace Json
         /**
          * \brief Destructor.
          */
-        ~Handler();
+        virtual ~Handler();
 
         /**
          * \brief Add a new RPC method.
-         * \param method RPC method to add
+         * \param method RPC method to add (MUST be dynamically allocated using new)
+         * \note Json::Rpc::Handler object takes care of freeing method memory.\n
+         * The way of calling this method is:
+         * <code>
+         * handler.AddMethod(new RpcMethod<MyClass>(...));
+         * </code>
          * \warning The "method" parameter MUST be dynamically allocated (using new).
-         * \warning Json::Rpc::Handler object takes care of freeing method memory.\n
-         * The way of calling this method is handler.AddMethod(new RpcMethod(...));
          */
         void AddMethod(CallbackMethod* method);
 
