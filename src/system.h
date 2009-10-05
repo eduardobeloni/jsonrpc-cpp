@@ -137,23 +137,23 @@ namespace System
    * Preferred use of this class is to construct ThreadArgImpl inside
    * another class and pass <code>*this</code> as obj parameter:\n
    * \n
-   * <code>
-   * class MyClass\n
-   * {\n
-   *    public:\n
-   *      void MyMethod()\n
-   *      {\n
-   *        ThreadArg* arg = new ThreadArgImpl<MyClass>(*this, &MethodForThread, NULL);\n
-   *        Thread th(arg);\n
-   *        th.Start();\n
-   *      }\n
+   * \code
+   * class MyClass
+   * {
+   *    public:
+   *      void MyMethod()
+   *      {
+   *        ThreadArg* arg = new ThreadArgImpl<MyClass>(*this, &MyClass::MethodForThread, NULL);
+   *        Thread th(arg);
+   *        th.Start();
+   *      }
    *
-   *      void* MethodForThread(void * arg)\n
-   *      {\n
-   *        // do stuff \n
-   *      }\n
+   *      void* MethodForThread(void * arg)
+   *      {
+   *        // do stuff 
+   *      }
    * };
-   * </code>
+   * \endcode
    *
    */
   class Thread
@@ -162,7 +162,7 @@ namespace System
       /**
        * \brief Constructor.
        * \param arg thread argument (MUST be dynamically allocated using new)
-       * \note system::Thread object takes care of freeing method memory.\n
+       * \note System::Thread object takes care of freeing method memory.\n
        * The way of calling constructor is:
        * <code>
        * Thread thread(new ThreadArgImpl<MyClass>(instanceOfMyClass, &MyClass::Method));

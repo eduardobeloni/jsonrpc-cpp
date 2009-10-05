@@ -5,7 +5,7 @@
 import sys; 
 
 # Configure compiler arguments
-cflags = ['-std=c++98', '-Wall', '-W', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
+cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
 
 # Command line parsing
 
