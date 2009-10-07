@@ -80,7 +80,7 @@ namespace System
    * \warning As class keep pointer of object reference, you should take 
    * care at the lifetime of object you pass in ThreadArgImpl constructor,
    * else it could lead to crash your program.\n See Thread class documentation
-   * to have example of how to use.
+   * for an example of how to use ThreadArgImpl class.
    * \see Thread
    */
   template<class T> class ThreadArgImpl : public ThreadArg

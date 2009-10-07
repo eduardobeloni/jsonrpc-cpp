@@ -78,6 +78,11 @@ namespace Json
     /**
      * \class RpcMethod
      * \brief Template class that represent the RPC method.
+     *
+     * Typically RpcMethod object is created inside another class and use
+     * a method of this class. See Handler class documentation for an example
+     * of how to use RpcMethod class.
+     *
      * \warning As class keep pointer of object reference, you should take 
      * care at the lifetime of object you pass in RpcMethod constructor,
      * else it could lead to crash your program.
@@ -160,7 +165,30 @@ namespace Json
 
     /**
      * \class Handler
-     * \brief Container of methods which can be called remotly.
+     * \brief Container of methods which can be called remotely.
+     *
+     * Preferred use of this class is to construct RpcMethod inside
+     * another class and pass <code>*this</code> as obj parameter:\n
+     * \n
+     * \code
+     * class MyClass
+     * {
+     *    public:
+     *      void Init()
+     *      {
+     *        RpcMethod* method = new RpcMethod<MyClass>(*this, &MyClass::RemoteMethod, std::string("remote_method"), std::string("Description"));
+     *        m_handler.AddMethod(method);
+     *      }
+     *
+     *      bool RemoteMethod(const Json::Value& msg, Json::Value& response)
+     *      {
+     *        // do stuff
+     *      }
+     *
+     *    private:
+     *      Handler m_handler;
+     * };
+     * \endcode
      * \note Always pass it in function with reference (i.e. void foo(Json::Rpc::Handler& handler)).
      * \see RpcMethod
      */
