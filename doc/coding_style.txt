@@ -59,22 +59,23 @@ The code has to follow these recommendations:
 - Prefer using size_t/ssize_t instead of int/unsigned int when possible;
 - Use "const" keyword for pointers and references if they should not been modified in function/method;
 - Use "const" keyword for methods if they do not modified class variables;
+- Put a space before and after operator +/-* i.e. a + b - ((c * 5) / 3);
 - Put an empty line at the end of each file.
 
 Naming has to follow these recommendations:
 - File name has to be in lower case, words are separated by  "_" (core files) or "-" (test and application-level files);
 - Class and method name respect the CamelCase convention (MyClass::MyMethod);
-- All class member variables name must be prefixed with "m_";
+- All class member variables name must be prefixed with "m_" (m_var);
 - Function name should be in lower case, words are separeted by a "_" character (my_function);
-- Each global variable must be prefixed with "g_".
+- Each global variable must be prefixed with "g_" (g_run).
 
-Each file, function, structure, class and global variable MUST be documented using doxygen. Here is a
-complete example:
+Each file, function, structure, class and global variable MUST be documented using doxygen.
+Here is a complete example:
 
 /**
  * \file my_file.h
  * \brief Short description.
- * \author name
+ * \author Name
  * \date 2008
  */
 
@@ -142,5 +143,5 @@ III) Standards
 ---------------
 
 In order to compile and run on many operating systems the code has to be portable. Thus
-it is strongly recommended to write code which respect C++98 and POSIX standards.
+it is strongly recommended to write code which respects C++98 and POSIX standards.
 
