@@ -126,7 +126,7 @@ namespace System
 
   bool Thread::Stop()
   {
-    return TerminateThread(m_id, 0xffffffff);
+    return TerminateThread(m_id, (void*)-1);
   }
 
   bool Thread::Join(void** ret)

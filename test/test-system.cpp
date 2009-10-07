@@ -124,8 +124,12 @@ namespace System
         th.Start(false);
         th.Stop();
         th.Join(&ret);
-
-        CPPUNIT_ASSERT(ret == (void*)0xffffffff);
+        
+        /* on x86 it returns 0xffffffff
+         * on x86-64 0xffffffffffffffff
+         * so (void*)-1
+         */
+        CPPUNIT_ASSERT(ret == (void*)-1);
       }
   };
 
