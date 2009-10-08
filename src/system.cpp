@@ -76,7 +76,7 @@ namespace System
       return false;
     }
 
-    if(pthread_attr_setdetachstate(&attr, detach) != 0)
+    if(pthread_attr_setdetachstate(&attr, detach ? PTHREAD_CREATE_DETACHED : PTHREAD_CREATE_JOINABLE) != 0)
     {
       pthread_attr_destroy(&attr);
       return false;
