@@ -235,6 +235,46 @@ namespace System
       ThreadArg* m_arg;
   };
 
+  /**
+   * \class Mutex
+   * \brief Mutex implementation.
+   */
+  class Mutex
+  {
+    public:
+      /**
+       * \brief Constructor.
+       */
+      Mutex();
+
+      /**
+       * \brief Destructor.
+       */
+      ~Mutex();
+
+      /**
+       * \brief Lock the mutex.
+       * \return true if mutex is locked, false if error
+       */
+      bool Lock();
+      
+      /**
+       * \brief Unlock the mutex.
+       * \return true if mutex is unlocked, false if error
+       */
+      bool Unlock();
+
+    private:
+      /**
+       * \brief The mutex.
+       */
+#ifdef _WIN32
+      HANDLE m_mutex;
+#else
+      pthread_mutex_t m_mutex;
+#endif
+  };
+
 } /* namespace System */
 
 #endif /* SYSTEM_H */

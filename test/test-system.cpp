@@ -80,6 +80,7 @@ namespace System
     CPPUNIT_TEST_SUITE(System::TestSystem);
     CPPUNIT_TEST(testThreadCreate);
     CPPUNIT_TEST(testThreadCancel);
+    CPPUNIT_TEST(testMutex);
     CPPUNIT_TEST_SUITE_END();
 
     public:
@@ -130,6 +131,17 @@ namespace System
          * so (void*)-1
          */
         CPPUNIT_ASSERT(ret == (void*)-1);
+      }
+
+      /**
+       * \brief Test mutex.
+       */
+      void testMutex()
+      {
+        Mutex mutex;
+
+        CPPUNIT_ASSERT(mutex.Lock());
+        CPPUNIT_ASSERT(mutex.Unlock());
       }
   };
 

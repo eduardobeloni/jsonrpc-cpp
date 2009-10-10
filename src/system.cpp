@@ -45,6 +45,10 @@ namespace System
   {
   }
 
+#ifndef WIN32
+  
+  /* POSIX specific part for thread and mutex */
+
   Thread::Thread(ThreadArg* arg)
   {
     m_arg = arg;
@@ -54,10 +58,6 @@ namespace System
   {
     delete m_arg;
   }
-
-#ifndef WIN32
-
-  /* POSIX specific part */
 
   bool Thread::Start(bool detach)
   {
@@ -105,21 +105,56 @@ namespace System
     /* call our specific object method */
     return thread->m_arg->Call();
   }
+  
+  Mutex::Mutex()
+  {
+    pthread_mutexattr_t attr;
+
+    pthread_mutexattr_init(&attr);
+    pthread_mutex_init(&m_mutex, &attr);
+    pthread_mutexattr_destroy(&attr);
+  }
+  
+  Mutex::~Mutex()
+  {
+    pthread_mutex_destroy(&m_mutex);
+  }
+
+  bool Mutex::Lock()
+  {
+    return !pthread_mutex_lock(&m_mutex);
+  }
+
+  bool Mutex::Unlock()
+  {
+    return !pthread_mutex_unlock(&m_mutex);
+  }
 
 #else
 
-  /* Windows specific part */
+  /* Windows specific part for thread and mutex */
+  
+  Thread::Thread(ThreadArg* arg)
+  {
+    m_arg = arg;
+  }
+
+  Thread::~Thread()
+  {
+    delete m_arg;
+  }
+
 
   bool Thread::Start(bool detach)
   {
     detach = detach; /* unused parameter */
 
-    m_id = CreateThread(NULL,         /* default security attributes */
-                0,             /* use default stack size */ 
-                &Thread::Call, /* thread function name */
-                this,          /* argument to thread function */
-                0,             /* use default creation flags */
-                NULL);        /* returns the thread identifier */
+    m_id = CreateThread(NULL,          /* default security attributes */
+                        0,             /* use default stack size */ 
+                        &Thread::Call, /* thread function name */
+                        this,          /* argument to thread function */
+                        0,             /* use default creation flags */
+                        NULL);         /* returns the thread identifier */
 
     return m_id != NULL;
   }
@@ -146,6 +181,42 @@ namespace System
 
     /* call our specific object method */
     return (DWORD)thread->m_arg->Call();
+  }
+
+  Mutex::Mutex()
+  {
+    m_mutex = CreateMutex(NULL,  /* no security attribute */ 
+                          0,     /* not initial owner (i.e. no first lock) */
+                          NULL); /* no name */
+  }
+
+  Mutex::~Mutex()
+  {
+    /* free mutex */
+    if(m_mutex)
+    {
+      CloseHandle(m_mutex);
+    }
+  }
+
+  bool Mutex::Lock()
+  {
+    if(!m_mutex)
+    {
+      return false;
+    }
+
+    return (WaitForSingleObject(m_mutex, INFINITE) == WAIT_OBJECT_0)
+  }
+
+  bool Mutex::Unlock()
+  {
+    if(!m_mutex)
+    {
+      return false;
+    }
+
+    return ReleaseMutex(m_mutex); 
   }
 
 #endif
