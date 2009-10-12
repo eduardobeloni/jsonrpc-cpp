@@ -26,6 +26,7 @@
 #define JSONRPC_COMMON_H
 
 #ifndef _WIN32
+
 #include <stdint.h>
 
 #else

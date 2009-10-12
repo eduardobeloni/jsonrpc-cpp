@@ -25,7 +25,7 @@
 #ifndef JSONRPC_HANDLER_H
 #define JSONRPC_HANDLER_H
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <string>
 #include <list>
