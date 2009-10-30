@@ -161,7 +161,7 @@ namespace System
 
   bool Thread::Stop()
   {
-    return TerminateThread(m_id, (void*)-1);
+    return TerminateThread(m_id, (DWORD)-1);
   }
 
   bool Thread::Join(void** ret)
@@ -206,7 +206,7 @@ namespace System
       return false;
     }
 
-    return (WaitForSingleObject(m_mutex, INFINITE) == WAIT_OBJECT_0)
+    return (WaitForSingleObject(m_mutex, INFINITE) == WAIT_OBJECT_0);
   }
 
   bool Mutex::Unlock()
