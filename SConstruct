@@ -2,7 +2,8 @@
 # JsonRpc-Cpp build file.
 #
 
-import sys; 
+import sys;
+import os;
 
 # Configure compiler arguments
 cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
@@ -29,7 +30,7 @@ if sys.platform == 'win32':
   cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
 
 # Create an environment
-env = Environment(tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
+env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
 
 # Sources and name of the JsonRpc-Cpp library
 lib_target  = 'jsonrpc';
