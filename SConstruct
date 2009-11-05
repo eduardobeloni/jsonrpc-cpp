@@ -68,7 +68,7 @@ if sys.platform == 'win32':
 else:
   libs.append('pthread');
 
-libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS=libs);
+libjsonrpc = env.SharedLibrary(target = lib_target, source = lib_sources, LIBS = libs);
 
 # Build examples
 examples_sources = ['examples/test-rpc.cpp', lib_sources];
@@ -79,11 +79,11 @@ tcpclient_sources = ['examples/tcp-client.cpp'];
 system_sources = ['examples/system.cpp'];
 
 examples_common = env.Object(examples_sources);
-tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS=libs);
-udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS=libs);
-tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS=libs);
-udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS=libs);
-system_bin = env.Program(target = 'examples/system', source = [system_sources, examples_common], LIBS=libs);
+tcpserver = env.Program(target = 'examples/tcp-server', source = [tcpserver_sources, examples_common], LIBS = libs);
+udpserver = env.Program(target = 'examples/udp-server', source = [udpserver_sources, examples_common], LIBS = libs);
+tcpclient = env.Program(target = 'examples/tcp-client', source = [tcpclient_sources, examples_common], LIBS = libs);
+udpclient = env.Program(target = 'examples/udp-client', source = [udpclient_sources, examples_common], LIBS = libs);
+system_bin = env.Program(target = 'examples/system', source = [system_sources, examples_common], LIBS = libs);
 
 # Build unit tests
 test_common = env.Object(lib_sources);
@@ -92,7 +92,7 @@ unittest_sources = ['test/test-runner.cpp',
                     'test/test-system.cpp',
                     'test/test-netstring.cpp']
 
-unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS=[libs, 'cppunit']);
+unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS = [libs, 'cppunit']);
 
 # Run unit tests
 runtest = env.Command('runtest', None, "test/test-runner");
