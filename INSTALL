@@ -10,14 +10,16 @@ Requirements
 - JsonCpp source files (http://jsoncpp.sourceforge.net/).
 
 For the moment only MinGW compiler is supported to build
-JsonRpc-Cpp on MS Windows.
+JsonRpc-Cpp on MS Windows. 
+Note for Windows 64 bits, you have to install WPG-System64
+from http://www.cadforte.com/system64.html
 
 Build JsonCpp
 --------------
 
 Get JsonCpp source code from SVN repository (there are no releases):
 
-$ svn co https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk/jsoncpp jsoncpp 
+$ svn co https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk jsoncpp 
 $ cd jsoncpp/
 
 Compilation,
@@ -37,9 +39,13 @@ for MacOS X:
 # cp -r include/json /usr/local/include/json
 
 for Windows:
-# xcopy buildscons\mingw\src\lib_json\libjon_mingw*.a C:\MinGW\lib\libjson.a
+# xcopy buildscons\mingw\src\lib_json\libjson_mingw*.a C:\MinGW\lib\libjson.a
 # mkdir C:\MinGW\include\json
 # xcopy /S include\json C:\MinGW\include\json
+
+You will also need libjson_mingw_mt.dll located at buildscons\mingw\src\lib_json\. You can either put it
+in the same directory of your application or add the full path of the DLL directory in 
+the "Path" environment variable.
 
 Build JsonRpc-Cpp
 ------------------

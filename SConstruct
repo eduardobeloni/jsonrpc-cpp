@@ -4,9 +4,14 @@
 
 import sys;
 import os;
+import platform as pltfrm;
 
 # Configure compiler arguments
 cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
+
+cpppath = [];
+
+libpath = [];
 
 # Command line parsing
 
@@ -22,6 +27,9 @@ else:
     install_dir = 'C:\\MinGW\\';
   else:
     install_dir = '/usr/local';
+cpppath = [];
+libpath = [];
+
 
 platform = "default"; 
 if sys.platform == 'win32':
@@ -29,8 +37,13 @@ if sys.platform == 'win32':
   # Remove flags that cause compilation errors
   cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
 
+  if pltfrm.architecture()[0] == '64bit': 
+    cpppath.append('C:\\msys\\system64\\include');
+    libpath.append('C:\\msys\\system64\\lib');
+
+
 # Create an environment
-env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags);
+env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags, CPPPATH = cpppath, LIBPATH = libpath);
 
 # Sources and name of the JsonRpc-Cpp library
 lib_target  = 'jsonrpc';

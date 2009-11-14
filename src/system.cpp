@@ -180,7 +180,11 @@ namespace System
     Thread* thread = static_cast<Thread*>(arg);
 
     /* call our specific object method */
+#ifdef _WIN64
+    return (DWORD64)thread->m_arg->Call();
+#else
     return (DWORD)thread->m_arg->Call();
+#endif
   }
 
   Mutex::Mutex()
