@@ -27,15 +27,18 @@ else:
     install_dir = 'C:\\MinGW\\';
   else:
     install_dir = '/usr/local';
+
 cpppath = [];
 libpath = [];
+linkflags = [];
 
+platform = "default";
 
-platform = "default"; 
 if sys.platform == 'win32':
   platform = "mingw";
   # Remove flags that cause compilation errors
   cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
+  linkflags.append('-enable-auto-import');
 
   if pltfrm.architecture()[0] == '64bit': 
     cpppath.append('C:\\msys\\system64\\include');
@@ -43,7 +46,7 @@ if sys.platform == 'win32':
 
 
 # Create an environment
-env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags, CPPPATH = cpppath, LIBPATH = libpath);
+env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags, CPPPATH = cpppath, LIBPATH = libpath, LINKFLAGS = linkflags);
 
 # Sources and name of the JsonRpc-Cpp library
 lib_target  = 'jsonrpc';
