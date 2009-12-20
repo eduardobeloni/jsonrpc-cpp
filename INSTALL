@@ -31,21 +31,26 @@ $ scons platform=mingw
 
 Installation,
 for Linux: 
-# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*libmt.so /usr/local/lib/libjson.so
+# cp libs/linux-gcc-*/libjson_linux-gcc*libmt.so /usr/local/lib/libjson.so
 # cp -r include/json /usr/local/include/json
 
 for MacOS X: 
-# cp buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc*.dylib /usr/local/lib/libjson.dylib
+# cp libs/linux-gcc-*/libjson_linux-gcc*.dylib /usr/local/lib/libjson.dylib
 # cp -r include/json /usr/local/include/json
 
-for Windows:
-# xcopy buildscons\mingw\src\lib_json\libjson_mingw*.a C:\MinGW\lib\libjson.a
+for Windows with MinGW 32-bit:
+# xcopy libs\mingw\libjson_mingw*.a C:\MinGW\lib\libjson.a
 # mkdir C:\MinGW\include\json
 # xcopy /S include\json C:\MinGW\include\json
 
-You will also need libjson_mingw_mt.dll located at buildscons\mingw\src\lib_json\. You can either put it
-in the same directory of your application or add the full path of the DLL directory in 
-the "Path" environment variable.
+For Windows with MinGW 64-bit (WPG System64):
+# xcopy libs\mingw\libjson_mingw*.a C:\msys\system64\lib\libjson.a
+# mkdir C:\msys\system64\include\json
+# xcopy /S include\json C:\msys\system64\include\json
+
+You will also need libjson_mingw_mt.dll located at buildscons\mingw\src\lib_json\.
+You can either put it in the same directory of your application or add the full path 
+of the DLL directory in the "Path" environment variable.
 
 Build JsonRpc-Cpp
 ------------------
