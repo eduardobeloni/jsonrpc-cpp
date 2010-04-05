@@ -40,11 +40,6 @@ if sys.platform == 'win32':
   cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
   linkflags.append('-enable-auto-import');
 
-  if pltfrm.architecture()[0] == '64bit': 
-    cpppath.append('C:\\msys\\system64\\include');
-    libpath.append('C:\\msys\\system64\\lib');
-
-
 # Create an environment
 env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags, CPPPATH = cpppath, LIBPATH = libpath, LINKFLAGS = linkflags);
 

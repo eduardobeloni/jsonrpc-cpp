@@ -11,9 +11,9 @@ Requirements
 
 For the moment only MinGW compiler is supported to build
 JsonRpc-Cpp on MS Windows. 
-Note for Windows 64 bits, you have to install WPG-System64
-from http://www.cadforte.com/system64.html
-
+Note for Windows 64-bit, in order to make 64-bit library, 
+you have to install MinGW-w64.
+ 
 Build JsonCpp
 --------------
 
@@ -38,19 +38,10 @@ for MacOS X:
 # cp libs/linux-gcc-*/libjson_linux-gcc*.dylib /usr/local/lib/libjson.dylib
 # cp -r include/json /usr/local/include/json
 
-for Windows with MinGW 32-bit:
+for Windows with MinGW:
 # xcopy libs\mingw\libjson_mingw*.a C:\MinGW\lib\libjson.a
 # mkdir C:\MinGW\include\json
 # xcopy /S include\json C:\MinGW\include\json
-
-For Windows with MinGW 64-bit (WPG System64):
-# xcopy libs\mingw\libjson_mingw*.a C:\msys\system64\lib\libjson.a
-# mkdir C:\msys\system64\include\json
-# xcopy /S include\json C:\msys\system64\include\json
-
-You will also need libjson_mingw_mt.dll located at buildscons\mingw\src\lib_json\.
-You can either put it in the same directory of your application or add the full path 
-of the DLL directory in the "Path" environment variable.
 
 Build JsonRpc-Cpp
 ------------------
