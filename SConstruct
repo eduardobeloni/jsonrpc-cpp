@@ -24,7 +24,7 @@ if ARGUMENTS.get('prefix', 0) != 0:
   install_dir =  ARGUMENTS.get('prefix', ''); 
 else:
   if sys.platform == 'win32':
-    install_dir = 'C:\\MinGW\\';
+      install_dir = 'C:\\MinGW\\';
   else:
     install_dir = '/usr/local';
 
@@ -39,6 +39,7 @@ if sys.platform == 'win32':
   # Remove flags that cause compilation errors
   cflags.remove('-std=c++98'); #::swprintf and ::vswprintf has not been declared
   linkflags.append('-enable-auto-import');
+  cpppath.append('-Ic:\\MinGW\\include');
 
 # Create an environment
 env = Environment(ENV= os.environ.copy(), tools = [platform, "doxygen"], toolpath = ['.', './doc'], CXXFLAGS = cflags, CPPPATH = cpppath, LIBPATH = libpath, LINKFLAGS = linkflags);
