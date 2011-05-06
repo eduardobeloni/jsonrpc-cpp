@@ -46,7 +46,7 @@
  * 
  * \section section-license License
  * 
- * JsonRpc-Cpp is licensed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPL version 3</a>.
+ * JsonRpc-Cpp is licensed under the <a href="http://www.gnu.org/licenses/lgpl-3.0.html">LGPL version 3</a>.
  * 
  * \section section-links Links
  * 

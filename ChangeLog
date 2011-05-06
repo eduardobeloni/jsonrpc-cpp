@@ -1,6 +1,7 @@
-2009-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+2011-05-06  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
-  * Version 0.3     : - Thread and mutex support.
+  * Version 0.3     : - Thread and mutex support;
+											- Switch to LGPLv3 license.
 
 2009-05-27  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
