@@ -1,7 +1,11 @@
+2011-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+
+  * Version 0.4      : - 
+
 2011-05-06  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
   * Version 0.3     : - Thread and mutex support;
-											- Switch to LGPLv3 license.
+                      - Switch to LGPLv3 license.
 
 2009-05-27  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
@@ -27,7 +31,7 @@
                       - Fix "system.describe" response structure ("result" field);
                       - Add doxygen command for scons.
 
-2008-09-22	Sebastien Vincent <sebastien.vincent@cppextrem.com>
-	
-	* Initial version.
+2008-09-22  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+  
+  * Initial version.
 
