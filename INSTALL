@@ -7,6 +7,7 @@ Requirements
 - C++ compiler toolchain;
 - python;
 - scons;
+- libcurl if you want to build the HTTP client;
 - JsonCpp source files (http://jsoncpp.sourceforge.net/).
 
 For the moment only MinGW compiler is supported to build

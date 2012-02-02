@@ -44,7 +44,8 @@ namespace Json
   {
     /**
      * \enum EncapsulatedFormat
-     * \brief JSON-RPC message encoding format (nothing to do with UTF-8 or languages).
+     * \brief JSON-RPC message encoding format (nothing to do with UTF-8 or 
+     * languages).
      */
     enum EncapsulatedFormat
     {
@@ -59,7 +60,8 @@ namespace Json
     /**
      * \enum ErrorCode
      * \brief JSON-RPC error codes.
-     * \note Value from -32099 to -32000 are reserved for implementation-defined server-errors.
+     * \note Value from -32099 to -32000 are reserved for implementation-defined
+     * server-errors.
      */
     enum ErrorCode
     {

@@ -28,7 +28,7 @@
  * reply either with success or error code (in case parsing failed, ...).
  *
  * JsonRpc-Cpp provides also simple JSON-RPC TCP and UDP server implementations (Json::Rpc::TcpServer and Json::Rpc::UdpServer) as well
- * as simple JSON-RPC TCP and UDP client implementations (Json::Rpc::TcpClient and Json::Rpc::UdpClient).
+ * as simple JSON-RPC TCP, UDP and HTTP client implementations (Json::Rpc::TcpClient, Json::Rpc::UdpClient and Json::Rpc::HttpClient).
  *
  * \section section-build Build instructions
  * 

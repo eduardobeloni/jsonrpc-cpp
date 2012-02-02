@@ -10,7 +10,6 @@ import platform as pltfrm;
 cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
 
 cpppath = [];
-
 libpath = [];
 
 # Command line parsing
@@ -73,6 +72,11 @@ lib_includes = ['src/jsonrpc.h',
 
 # Build libjsonrpc
 libs = ['json'];
+
+if env.WhereIs('curl') is not None:
+  libs.append('curl');
+  lib_includes.append('src/jsonrpc_httpclient.h');
+  lib_sources.append('src/jsonrpc_httpclient.cpp');
 
 # Add winsock library for MS Windows
 if sys.platform == 'win32':
