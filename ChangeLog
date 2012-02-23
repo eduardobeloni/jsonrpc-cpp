@@ -1,6 +1,7 @@
-2011-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+2012-02-22  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
-  * Version 0.4     : - HTTP JSON-RPC client (contributed by Brian Panneton).
+  * Version 0.4     : - HTTP JSON-RPC client (contributed by Brian Panneton);
+                      - Bugs fixes.
 
 2011-05-06  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
