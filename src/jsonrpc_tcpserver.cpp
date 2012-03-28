@@ -182,7 +182,12 @@ namespace Json
         /* remove disconnect socket descriptor */
         for(std::list<int>::iterator it = m_purge.begin() ; it != m_purge.end() ; it++)
         {
-          m_clients.remove((*it));
+          int s = (*it);
+          if(s > 0)
+          {
+            close(s);
+          }
+          m_clients.remove(s);
         }
 
         /* purge disconnected list */
