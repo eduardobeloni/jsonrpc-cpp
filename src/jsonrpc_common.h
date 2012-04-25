@@ -39,7 +39,6 @@
 
 namespace Json
 {
-
   namespace Rpc
   {
     /**
@@ -71,9 +70,7 @@ namespace Json
       INVALID_PARAMS = -32602, /**< Invalid method parameters. */
       INTERNAL_ERROR = -32603 /**< Internal JSON-RPC error. */
     };
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 
 #endif /* JSONRPC_COMMON_H */

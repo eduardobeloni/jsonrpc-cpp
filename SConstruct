@@ -77,6 +77,7 @@ if env.WhereIs('curl') is not None:
   libs.append('curl');
   lib_includes.append('src/jsonrpc_httpclient.h');
   lib_sources.append('src/jsonrpc_httpclient.cpp');
+  env['CXXFLAGS'].append('-DCURL_ENABLED')
 
 # Add winsock library for MS Windows
 if sys.platform == 'win32':
@@ -111,11 +112,12 @@ unittest_sources = ['test/test-runner.cpp',
 unittest = env.Program(target = 'test/test-runner', source = [unittest_sources, test_common], LIBS = [libs, 'cppunit']);
 
 # Run unit tests
-runtest = env.Command('runtest', None, "test/test-runner");
+#
+runtest = env.Command('runtest', None, os.path.join("test", "test-runner"));
 
 # Install script
-env.Install(dir = install_dir + "/lib/", source = libjsonrpc);
-env.Install(dir = install_dir + "/include/jsonrpc/", source = lib_includes);
+install = env.Install(dir = install_dir + "/lib/", source = libjsonrpc[0]);
+install += env.Install(dir = install_dir + "/include/jsonrpc/", source = lib_includes);
 
 # Doxygen
 doxygen = env.Doxygen("Doxyfile");
@@ -126,7 +128,7 @@ env.Alias('doxygen', doxygen);
 # Alias for targets
 env.Alias('build', [libjsonrpc]);
 env.Alias('examples', ['build', tcpserver, udpserver, tcpclient, udpclient, system_bin]);
-env.Alias('install', [install_dir]);
+env.Alias('install', install);
 env.Alias('build-test', ['build', unittest]);
 env.Alias('test', ['build-test', runtest]);
 env.Alias('all', ['build', 'examples', 'doc', 'test']);

@@ -24,6 +24,8 @@
 
 #include "test-rpc.h"
 
+#include <iostream>
+
 bool TestRpc::Print(const Json::Value& root, Json::Value& response)
 {
   std::cout << "Receive query: " << root << std::endl;

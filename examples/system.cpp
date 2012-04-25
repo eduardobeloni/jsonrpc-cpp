@@ -28,7 +28,7 @@
 
 #include "../src/system.h"
 
-using namespace System;
+using namespace system_util;
 
 /**
  * \class MyClass
@@ -43,7 +43,8 @@ class MyClass
     void MyMethod()
     {
       void* ret = NULL;
-      ThreadArg* arg = new ThreadArgImpl<MyClass>(*this, &MyClass::MethodForThread, NULL);
+      ThreadArg* arg = new ThreadArgImpl<MyClass>(*this,
+          &MyClass::MethodForThread, NULL);
       Thread th(arg);
 
       th.Start(false);
@@ -82,8 +83,9 @@ int main(int argc, char** argv)
 {
   MyClass myObj;
 
-  argc = argc; /* not used */
-  argv = argv; /* not used */
+  /* not used */
+  (void)argc; 
+  (void)argv;
 
   myObj.MyMethod();
 

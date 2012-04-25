@@ -34,7 +34,7 @@
  * \var g_run
  * \brief Running state of the program.
  */
-static volatile bool g_run = false;
+static volatile sig_atomic_t g_run = 0;
 
 /**
  * \brief Signal management.
@@ -46,7 +46,7 @@ static void signal_handler(int code)
   {
     case SIGINT:
     case SIGTERM:
-      g_run = false;
+      g_run = 0;
       break;
     default:
       break;
@@ -65,8 +65,8 @@ int main(int argc, char** argv)
   Json::Rpc::UdpServer server(std::string("127.0.0.1"), 8086);
 
   /* to avoid compilation warnings */
-  argc = argc;
-  argv = argv;
+  (void)argc;
+  (void)argv;
 
   if(!networking::init())
   {
@@ -84,8 +84,10 @@ int main(int argc, char** argv)
     std::cout << "Error signal SIGINT will not be handled" << std::endl;
   }
 
-  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Print, std::string("print"), a.GetDescription()));
-  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Notify, std::string("notify"), a.GetDescription()));
+  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Print,
+        std::string("print"), a.GetDescription()));
+  server.AddMethod(new Json::Rpc::RpcMethod<TestRpc>(a, &TestRpc::Notify,
+        std::string("notify"), a.GetDescription()));
 
   /* server.SetEncapsulatedFormat(Json::Rpc::NETSTRING); */
 
@@ -95,7 +97,7 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
   }
 
-  g_run = true;
+  g_run = 1; 
 
   std::cout << "Start JSON-RPC UDP server" << std::endl;
 

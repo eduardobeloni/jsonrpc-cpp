@@ -10,7 +10,8 @@
  *
  * \section section-intro Introduction
  *
- * This is the API of JsonRpc-Cpp, an OpenSource implementation of the JSON-RPC protocol (specification 2.0).
+ * This is the API of JsonRpc-Cpp, an OpenSource implementation of the JSON-RPC
+ * protocol (specification 2.0).
  *
  * JSON-RPC is a lightweight remote procedure call protocol similar to XML-RPC.
  * 
@@ -22,17 +23,22 @@
  * <li> Network client implementation.</li>
  * </ul>
  *
- * JsonRpc-Cpp uses <a href="http://jsoncpp.sourceforge.net">JsonCpp</a> library to encode/decode JSON message.
+ * JsonRpc-Cpp uses <a href="http://jsoncpp.sourceforge.net">JsonCpp</a> library
+ * to encode/decode JSON message.
  * 
- * JsonRpc-Cpp provides a JSON-RPC class called Json::Rpc::Handler that contains RPC methods, check incoming JSON-RPC message,
+ * JsonRpc-Cpp provides a JSON-RPC class called Json::Rpc::Handler that contains
+ * RPC methods, check incoming JSON-RPC message,
  * reply either with success or error code (in case parsing failed, ...).
  *
- * JsonRpc-Cpp provides also simple JSON-RPC TCP and UDP server implementations (Json::Rpc::TcpServer and Json::Rpc::UdpServer) as well
- * as simple JSON-RPC TCP, UDP and HTTP client implementations (Json::Rpc::TcpClient, Json::Rpc::UdpClient and Json::Rpc::HttpClient).
+ * JsonRpc-Cpp provides also simple JSON-RPC TCP and UDP server implementations 
+ * (Json::Rpc::TcpServer and Json::Rpc::UdpServer) as well
+ * as simple JSON-RPC TCP, UDP and HTTP client implementations 
+ * (Json::Rpc::TcpClient, Json::Rpc::UdpClient and Json::Rpc::HttpClient).
  *
  * \section section-build Build instructions
  * 
- * To build and install JsonRpc-Cpp, see INSTALL file located in the source tree.
+ * To build and install JsonRpc-Cpp, see INSTALL file located in the source
+ * tree.
  *
  * \section section-standard Standards
  *

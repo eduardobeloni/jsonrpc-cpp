@@ -18,8 +18,9 @@ Future work
 
 - Multithreaded UDP/TCP servers;
 - HTTP / CGI encapsulation;
-- Implement a ClientTransactionManager for JSON-RPC client. This object would manage 
-  retransmissions, check if server response correspond to a precedent query, ...
+- Implement a ClientTransactionManager for JSON-RPC client. This object would
+manage retransmissions, check if server response correspond to a precedent 
+query, ...
 
 Contact 
 -------

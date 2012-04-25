@@ -42,8 +42,8 @@ int main(int argc, char** argv)
   std::string responseStr;
   
   /* avoid compilation warnings */
-  argc = argc;
-  argv = argv;
+  (void)argc;
+  (void)argv;
 
   if(!networking::init())
   {

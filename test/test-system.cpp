@@ -28,9 +28,8 @@
 
 #include "../src/system.h"
 
-namespace System
+namespace system_util
 {
-
   /**
    * \class Callback
    * \brief Callback example.
@@ -64,7 +63,7 @@ namespace System
            * if there have no cancelable call in method,
            * the Thread::Stop method cannot stop the thread.
            */
-          System::msleep(1000);
+          system_util::msleep(1000);
         }
         
         return a;
@@ -77,7 +76,7 @@ namespace System
    */
   class TestSystem : public CppUnit::TestFixture
   {
-    CPPUNIT_TEST_SUITE(System::TestSystem);
+    CPPUNIT_TEST_SUITE(system_util::TestSystem);
     CPPUNIT_TEST(testThreadCreate);
     CPPUNIT_TEST(testThreadCancel);
     CPPUNIT_TEST(testMutex);
@@ -105,7 +104,8 @@ namespace System
       {
         void* ret = NULL;
         Callback obj;
-        Thread th = Thread(new ThreadArgImpl<Callback>(obj, &Callback::Call, NULL));
+        Thread th = Thread(new ThreadArgImpl<Callback>(obj, &Callback::Call,
+              NULL));
 
         th.Start(false);
         th.Join(&ret);
@@ -120,7 +120,8 @@ namespace System
       {
         void* ret = NULL;
         Callback obj;
-        Thread th = Thread(new ThreadArgImpl<Callback>(obj, &Callback::Call2, NULL));
+        Thread th = Thread(new ThreadArgImpl<Callback>(obj, &Callback::Call2,
+              NULL));
 
         th.Start(false);
         th.Stop();
@@ -145,8 +146,8 @@ namespace System
       }
   };
 
-} /* namespace System */
+} /* namespace system */
 
 /* add the test suite in the global registry */
-CPPUNIT_TEST_SUITE_REGISTRATION(System::TestSystem);
+CPPUNIT_TEST_SUITE_REGISTRATION(system_util::TestSystem);
 

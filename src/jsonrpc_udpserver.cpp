@@ -31,10 +31,8 @@
 
 namespace Json 
 {
-
   namespace Rpc
   {
-
     UdpServer::UdpServer(const std::string& address, uint16_t port) : Server(address, port)
     {
       m_protocol = networking::UDP;
@@ -146,8 +144,6 @@ namespace Json
         /* problem */
       }
     }
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 

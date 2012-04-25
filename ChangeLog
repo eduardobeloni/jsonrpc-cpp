@@ -1,3 +1,6 @@
+2012-xx-xx  Sebastien Vincent <sebastien.vincent@cppextrem.com>
+  * Version 0.5      : - Refactoring to use entity/value/resources patterns.
+
 2012-02-22  Sebastien Vincent <sebastien.vincent@cppextrem.com>
 
   * Version 0.4     : - HTTP JSON-RPC client (contributed by Brian Panneton);

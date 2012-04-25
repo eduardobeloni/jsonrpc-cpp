@@ -103,11 +103,13 @@ namespace Json
         void testMethod()
         {
           const std::string str = "{\"jsonrpc\":\"2.0\", \"method\":\"print\"}";
-          const std::string str2 = "{\"jsonrpc\":\"2.0\", \"method\":\"method_does_not_exist\"}";
+          const std::string str2 =
+              "{\"jsonrpc\":\"2.0\", \"method\":\"method_does_not_exist\"}";
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj,
+                &TestRpc::Print, std::string("print")));
 
           CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
           CPPUNIT_ASSERT(m_handler->Process(str2, response) == false);
@@ -126,8 +128,10 @@ namespace Json
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Notify, std::string("notify")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj,
+                &TestRpc::Print, std::string("print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj,
+                &TestRpc::Notify, std::string("notify")));
 
           CPPUNIT_ASSERT(m_handler->Process(str, response) == true);
           CPPUNIT_ASSERT(response.size() == 2);
@@ -147,7 +151,8 @@ namespace Json
           TestRpc obj;
           Json::Value response;
 
-          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj, &TestRpc::Print, std::string("print")));
+          m_handler->AddMethod(new Json::Rpc::RpcMethod<TestRpc>(obj,
+                &TestRpc::Print, std::string("print")));
           CPPUNIT_ASSERT(m_handler->Process(str, response) == false);
           /* single error response when batched call itself failed */
           CPPUNIT_ASSERT(response.isArray() == false);
@@ -219,9 +224,7 @@ namespace Json
          */
         Handler* m_handler;
     };
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 
 /* add the test suite in the global registry */

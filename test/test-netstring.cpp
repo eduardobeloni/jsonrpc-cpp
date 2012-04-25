@@ -145,7 +145,6 @@ namespace netstring
         str = netstring::decode(encodedStr);
       }
   };
-
 } /* namespace netstring */
 
 /* add the test suite in the global registry */

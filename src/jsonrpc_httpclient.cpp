@@ -29,10 +29,8 @@
 
 namespace Json
 {
-
   namespace Rpc
   {
-
     HttpClient::HttpClient()
     {
       this->Initialize();
@@ -272,8 +270,6 @@ namespace Json
     {
       return -1; 
     }
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 

@@ -34,10 +34,8 @@
 
 namespace Json 
 {
-
   namespace Rpc
   {
-
     TcpServer::TcpServer(const std::string& address, uint16_t port) : Server(address, port)
     {
       m_protocol = networking::TCP;
@@ -251,8 +249,6 @@ namespace Json
     {
       return m_clients;
     }
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 

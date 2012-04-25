@@ -26,24 +26,26 @@
 
 namespace Json
 {
-
   namespace Rpc
   {
-
     CallbackMethod::~CallbackMethod()
     {
     }
 
     Handler::Handler()
     {
-      /* add a RPC method that list the actual RPC methods contained in the Handler */
+      /* add a RPC method that list the actual RPC methods contained in 
+       * the Handler 
+       */
       Json::Value root;
 
       root["description"] = "List the RPC methods available";
       root["parameters"] = Json::Value::null;
-      root["returns"] = "Object that contains description of all methods registered";
+      root["returns"] = 
+        "Object that contains description of all methods registered";
 
-      AddMethod(new RpcMethod<Handler>(*this, &Handler::SystemDescribe, std::string("system.describe"), root));
+      AddMethod(new RpcMethod<Handler>(*this, &Handler::SystemDescribe,
+            std::string("system.describe"), root));
     }
 
     Handler::~Handler()
@@ -105,7 +107,8 @@ namespace Json
       Json::Value err;
       
       /* check the JSON-RPC version => 2.0 */
-      if(!root.isObject() || !root.isMember("jsonrpc") || root["jsonrpc"] != "2.0") 
+      if(!root.isObject() || !root.isMember("jsonrpc") ||
+          root["jsonrpc"] != "2.0") 
       {
         error["id"] = Json::Value::null;
         error["jsonrpc"] = "2.0";
@@ -241,8 +244,6 @@ namespace Json
 
       return 0;
     }
-
   } /* namespace Rpc */
-
 } /* namespace Json */
 
