@@ -16,6 +16,8 @@ install:
 	install -m 644 src/$(LIBNAME).a $(PREFIX)/lib/
 	install -d $(PREFIX)/include/jsonrpc/
 	install -m 644 src/*.h $(PREFIX)/include/jsonrpc/
+	install -d $(PREFIX)/include/jsoncpp/
+	install -m 644 src/jsoncpp/json.h $(PREFIX)/include/jsoncpp/
 
 uninstall:
 	rm -f $(PREFIX)/lib/$(LIBNAME).*

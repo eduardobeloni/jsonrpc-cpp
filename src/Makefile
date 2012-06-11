@@ -9,7 +9,9 @@ OBJ = $(SRC:.cpp=.o)
 DEP = $(OBJ:.o=.d)
 TARGET = $(LIBNAME).so
 TARGET_ST = $(LIBNAME).a
-CXXFLAGS += -Wall -O2 -fpic
+JSONCPP_SRC = $(wildcard ./jsoncpp/*.cpp)
+JSONCPP_OBJ = $(JSONCPP_SRC:.cpp=.o)
+CXXFLAGS += -Wall -O2 -fpic -I./
 LDFLAGS += -lcurl -lpthread
 
 ifeq ($(ARCH), arm)
@@ -19,10 +21,10 @@ endif
 
 default: $(TARGET) $(TARGET_ST)
 
-$(TARGET): $(OBJ)
+$(TARGET): $(OBJ) $(JSONCPP_OBJ)
 	$(CXX) $(LDFLAGS) -shared $^ -o $@
 
-$(TARGET_ST): $(OBJ)
+$(TARGET_ST): $(OBJ) $(JSONCPP_OBJ)
 	$(AR) rcs $@ $^
 
 -include $(DEP)
@@ -31,5 +33,9 @@ $(TARGET_ST): $(OBJ)
 	$(CXX) $(CXXFLAGS) $(C_STD) -c $< -o $@
 	$(CXX) -MM $(CXXFLAGS) $< > $*.d
 
+$(JSONCPP_OBJ):
+	$(MAKE) -C jsoncpp/
+
 clean:
 	$(RM) $(TARGET) *.o *.so *.a *.d
+	$(MAKE) -C ./jsoncpp clean
