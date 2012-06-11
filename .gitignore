@@ -6,3 +6,4 @@
 *.os
 *.pyc
 *dblite
+*-test

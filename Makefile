@@ -3,12 +3,15 @@ PREFIX ?= /usr/local
 
 default:
 	$(MAKE) -C ./src
+	$(MAKE) -C ./examples/jsoncpp
 
 arm:
 	$(MAKE) -C ./src ARCH=arm
+	$(MAKE) -C ./examples/jsoncpp ARCH=arm
 
 clean:
 	$(MAKE) -C ./src clean
+	$(MAKE) -C ./examples/jsoncpp clean
 
 install:
 	install -d $(PREFIX)/lib/
