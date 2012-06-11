@@ -206,7 +206,7 @@ namespace Json
         /**
          * \brief Mutex to protected m_lastReceivedList.
          */
-        System::Mutex m_mutex;
+        system_util::Mutex m_mutex;
     };
   } /* namespace Rpc */
 } /* namespace Json */
