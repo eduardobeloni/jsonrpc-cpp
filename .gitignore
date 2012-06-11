@@ -1,0 +1,8 @@
+*.o
+*.so
+*~
+*.a
+*.d
+*.os
+*.pyc
+*dblite
