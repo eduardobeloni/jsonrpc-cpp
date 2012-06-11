@@ -40,7 +40,7 @@ static const int JSONRPC_CPP_VERSION = 500;
 static const char JSONRPC_CPP_VERSION_STRING[] = "0.5.0";
 
 /* include from external jsoncpp lib */
-#include <json/json.h>
+#include "../jsoncpp/json.h"
 
 /* include all headers from JsonRpc-Cpp lib */
 #include "jsonrpc_common.h"

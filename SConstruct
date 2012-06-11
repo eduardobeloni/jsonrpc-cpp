@@ -7,7 +7,7 @@ import os;
 import platform as pltfrm;
 
 # Configure compiler arguments
-cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-Werror', '-O2'];
+cflags = ['-std=c++98', '-Wall', '-Wextra', '-pedantic', '-Wredundant-decls', '-Wshadow', '-O2'];
 
 cpppath = [];
 libpath = [];
@@ -71,7 +71,7 @@ lib_includes = ['src/jsonrpc.h',
                 'src/networking.h'];
 
 # Build libjsonrpc
-libs = ['json'];
+libs = [];
 
 if env.WhereIs('curl') is not None:
   libs.append('curl');

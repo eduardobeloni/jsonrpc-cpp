@@ -1,0 +1,49 @@
+10
+
+dir
+0
+https://jsonrpc-cpp.svn.sourceforge.net/svnroot/jsonrpc-cpp/trunk/src/jsoncpp
+https://jsonrpc-cpp.svn.sourceforge.net/svnroot/jsonrpc-cpp
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bbb04abe-9aa6-4717-80b1-ed36530a708e
+
+json.h
+file
+
+
+
+add
+
+json-forwards.h
+file
+
+
+
+add
+
+jsoncpp.cpp
+file
+
+
+
+add
+
