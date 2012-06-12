@@ -21,10 +21,10 @@ endif
 
 default: $(TARGET) $(TARGET_ST)
 
-$(TARGET): $(OBJ) $(JSONCPP_OBJ)
+$(TARGET): $(JSONCPP_OBJ) $(OBJ)
 	$(CXX) $(LDFLAGS) -shared $^ -o $@
 
-$(TARGET_ST): $(OBJ) $(JSONCPP_OBJ)
+$(TARGET_ST): $(JSONCPP_OBJ) $(OBJ)
 	$(AR) rcs $@ $^
 
 -include $(DEP)

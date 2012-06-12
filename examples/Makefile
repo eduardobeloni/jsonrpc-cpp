@@ -6,7 +6,7 @@ OBJ = $(SRC:.cpp=.o)
 OBJ_ARM = $(SRC:.cpp=-arm.o)
 DEP = $(OBJ:.o=.d)
 
-CXXFLAGS += -static -I../src/jsoncpp -L../src/
+CXXFLAGS += -static -I../src -L../src/
 LDFLAGS += -ljsonrpc -lpthread
 
 default: $(OBJ)

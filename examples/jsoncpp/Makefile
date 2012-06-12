@@ -8,7 +8,7 @@ DEP = $(OBJ:.o=.d)
 TARGET = json-test
 TARGET_ARM = $(TARGET)-arm
 
-CXXFLAGS += -static -I../../src/jsoncpp -L../../src/
+CXXFLAGS += -static -I../../src -L../../src/
 LDFLAGS += -ljsonrpc
 
 default: $(TARGET)
