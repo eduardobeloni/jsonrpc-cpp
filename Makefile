@@ -3,14 +3,21 @@ PREFIX ?= /usr/local
 
 default:
 	$(MAKE) -C ./src
+
+ex:
+	$(MAKE) -C ./examples
 	$(MAKE) -C ./examples/jsoncpp
 
 arm:
 	$(MAKE) -C ./src ARCH=arm
+
+arm-ex:
+	$(MAKE) -C ./examples ARCH=arm
 	$(MAKE) -C ./examples/jsoncpp ARCH=arm
 
 clean:
 	$(MAKE) -C ./src clean
+	$(MAKE) -C ./examples clean
 	$(MAKE) -C ./examples/jsoncpp clean
 
 install:

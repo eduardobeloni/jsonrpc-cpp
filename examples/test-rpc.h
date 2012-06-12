@@ -25,7 +25,7 @@
 #ifndef TEST_RPC_H
 #define TEST_RPC_H 
 
-#include <json/json.h>
+#include <jsoncpp/json.h>
 
 /**
  * \class TestRpc
