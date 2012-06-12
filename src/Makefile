@@ -14,11 +14,6 @@ JSONCPP_OBJ = $(JSONCPP_SRC:.cpp=.o)
 CXXFLAGS += -Wall -O2 -fpic -I./
 LDFLAGS += -lcurl -lpthread
 
-ifeq ($(ARCH), arm)
-CXX = arm-linux-g++
-AR = arm-linux-ar
-endif
-
 default: $(TARGET) $(TARGET_ST)
 
 $(TARGET): $(JSONCPP_OBJ) $(OBJ)

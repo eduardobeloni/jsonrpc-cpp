@@ -6,10 +6,6 @@ OBJ = $(SRC:.cpp=.o)
 DEP = $(OBJ:.o=.d)
 CXXFLAGS += -Wall -O2 -fpic
 
-ifeq ($(ARCH), arm)
-CXX = arm-linux-g++
-endif
-
 -include $(DEP)
 
 default: $(OBJ)
